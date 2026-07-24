@@ -746,5 +746,353 @@
   "type_water": {
     "defaultMessage": "Eau",
     "description": "Pokémon type WATER"
+  },
+  "data_submission.title": {
+    "defaultMessage": "Soumission de données",
+    "description": "Page title for data submission"
+  },
+  "data_submission.description": {
+    "defaultMessage": "Soumettez manuellement vos données d'entraîneur Pokémon Go",
+    "description": "Data submission page meta description"
+  },
+  "data_submission.success": {
+    "defaultMessage": "Données soumises avec succès !",
+    "description": "Success message after data submission"
+  },
+  "data_submission.error": {
+    "defaultMessage": "Une erreur s'est produite. Veuillez réessayer.",
+    "description": "Error message on submission failure"
+  },
+  "data_submission.friendship_id": {
+    "defaultMessage": "Friendship ID",
+    "description": "Label for friendship_id field"
+  },
+  "data_submission.friend_code": {
+    "defaultMessage": "Code ami",
+    "description": "Label for friend_code field"
+  },
+  "data_submission.team": {
+    "defaultMessage": "Équipe",
+    "description": "Label for team field"
+  },
+  "data_submission.level": {
+    "defaultMessage": "Niveau",
+    "description": "Label for level field"
+  },
+  "data_submission.xp": {
+    "defaultMessage": "XP",
+    "description": "Label for xp field"
+  },
+  "data_submission.km_walked": {
+    "defaultMessage": "Km parcourus",
+    "description": "Label for km_walked field"
+  },
+  "data_submission.caught_pokemon": {
+    "defaultMessage": "Pokémon capturés",
+    "description": "Label for caught_pokemon field"
+  },
+  "data_submission.battles_won": {
+    "defaultMessage": "Batailles gagnées",
+    "description": "Label for battles_won field"
+  },
+  "data_submission.gym_battles_won": {
+    "defaultMessage": "Batailles de gymnase gagnées",
+    "description": "Label for gym_battles_won field"
+  },
+  "data_submission.grunts_defeated": {
+    "defaultMessage": "Grunts vaincus",
+    "description": "Label for grunts_defeated field"
+  },
+  "data_submission.normal_raids_won": {
+    "defaultMessage": "Raids normaux gagnés",
+    "description": "Label for normal_raids_won field"
+  },
+  "data_submission.legendary_raids_won": {
+    "defaultMessage": "Raids légendaires gagnés",
+    "description": "Label for legendary_raids_won field"
+  },
+  "data_submission.trainings_won": {
+    "defaultMessage": "Entraînements gagnés",
+    "description": "Label for trainings_won field"
+  },
+  "data_submission.raids_with_friends": {
+    "defaultMessage": "Raids avec des amis",
+    "description": "Label for raids_with_friends field"
+  },
+  "data_submission.raid_achievements": {
+    "defaultMessage": "Réalisations de raid",
+    "description": "Label for raid_achievements field"
+  },
+  "data_submission.unique_raid_bosses": {
+    "defaultMessage": "Bosses de raid uniques",
+    "description": "Label for unique_raid_bosses field"
+  },
+  "data_submission.evolved": {
+    "defaultMessage": "Évolutions",
+    "description": "Label for evolved field"
+  },
+  "data_submission.hatched": {
+    "defaultMessage": "Éclos",
+    "description": "Label for hatched field"
+  },
+  "data_submission.mega_evos": {
+    "defaultMessage": "Méga-évolutions",
+    "description": "Label for mega_evos field"
+  },
+  "data_submission.unique_mega_evos": {
+    "defaultMessage": "Méga-évolutions uniques",
+    "description": "Label for unique_mega_evos field"
+  },
+  "data_submission.trades": {
+    "defaultMessage": "Échanges",
+    "description": "Label for trades field"
+  },
+  "data_submission.photobombs": {
+    "defaultMessage": "Photobombs",
+    "description": "Label for photobombs field"
+  },
+  "data_submission.purified": {
+    "defaultMessage": "Purifiés",
+    "description": "Label for purified field"
+  },
+  "data_submission.best_friends": {
+    "defaultMessage": "Meilleurs amis",
+    "description": "Label for best_friends field"
+  },
+  "data_submission.best_buddies": {
+    "defaultMessage": "Meilleurs copains",
+    "description": "Label for best_buddies field"
+  },
+  "data_submission.trainers_referred": {
+    "defaultMessage": "Entraîneurs référés",
+    "description": "Label for trainers_referred field"
+  },
+  "data_submission.gbl_rank": {
+    "defaultMessage": "Rang GBL",
+    "description": "Label for gbl_rank field"
+  },
+  "data_submission.gbl_rating": {
+    "defaultMessage": "Rating GBL",
+    "description": "Label for gbl_rating field"
+  },
+  "data_submission.league_great_won": {
+    "defaultMessage": "Grande ligue gagnée",
+    "description": "Label for league_great_won field"
+  },
+  "data_submission.league_ultra_won": {
+    "defaultMessage": "Ultra-ligue gagnée",
+    "description": "Label for league_ultra_won field"
+  },
+  "data_submission.league_master_won": {
+    "defaultMessage": "Ligue maître gagnée",
+    "description": "Label for league_master_won field"
+  },
+  "data_submission.stops_spun": {
+    "defaultMessage": "Arrêts activés",
+    "description": "Label for stops_spun field"
+  },
+  "data_submission.unique_stops_spun": {
+    "defaultMessage": "Arrêts uniques activés",
+    "description": "Label for unique_stops_spun field"
+  },
+  "data_submission.quests": {
+    "defaultMessage": "Quêtes terminées",
+    "description": "Label for quests field"
+  },
+  "data_submission.berries_fed": {
+    "defaultMessage": "Baies nourries",
+    "description": "Label for berries_fed field"
+  },
+  "data_submission.hours_defended": {
+    "defaultMessage": "Heures défendues",
+    "description": "Label for hours_defended field"
+  },
+  "data_submission.vivillon": {
+    "defaultMessage": "Vivillon",
+    "description": "Label for vivillon field"
+  },
+  "data_submission.pikachu_caught": {
+    "defaultMessage": "Pikachus capturés",
+    "description": "Label for pikachu_caught field"
+  },
+  "data_submission.tiny_pokemon_caught": {
+    "defaultMessage": "Pokémon minuscules capturés",
+    "description": "Label for tiny_pokemon_caught field"
+  },
+  "data_submission.jumbo_pokemon_caught": {
+    "defaultMessage": "Pokémon jumbo capturés",
+    "description": "Label for jumbo_pokemon_caught field"
+  },
+  "data_submission.xl_karps": {
+    "defaultMessage": "Carapagos XL",
+    "description": "Label for xl_karps field"
+  },
+  "data_submission.xs_rats": {
+    "defaultMessage": "Rattata XS",
+    "description": "Label for xs_rats field"
+  },
+  "data_submission.giovanni_defeated": {
+    "defaultMessage": "Giovanni vaincu",
+    "description": "Label for giovanni_defeated field"
+  },
+  "data_submission.collections_done": {
+    "defaultMessage": "Collections terminées",
+    "description": "Label for collections_done field"
+  },
+  "data_submission.event_badges": {
+    "defaultMessage": "Insignes d'événement",
+    "description": "Label for event_badges field"
+  },
+  "data_submission.showcase_max_size_first_place": {
+    "defaultMessage": "Showcase taille max 1er rang",
+    "description": "Label for showcase_max_size_first_place field"
+  },
+  "data_submission.total_route_play": {
+    "defaultMessage": "Total Route Play",
+    "description": "Label for total_route_play field"
+  },
+  "data_submission.parties_completed": {
+    "defaultMessage": "Fêtes terminées",
+    "description": "Label for parties_completed field"
+  },
+  "data_submission.event_check_ins": {
+    "defaultMessage": "Check-ins d'événement",
+    "description": "Label for event_check_ins field"
+  },
+  "data_submission.seven_day_streaks": {
+    "defaultMessage": "Séries de 7 jours",
+    "description": "Label for seven_day_streaks field"
+  },
+  "data_submission.caught_at_lure": {
+    "defaultMessage": "Capturé avec appât",
+    "description": "Label for caught_at_lure field"
+  },
+  "data_submission.wayfarer_agreements": {
+    "defaultMessage": "Accords Wayfarer",
+    "description": "Label for wayfarer_agreements field"
+  },
+  "data_submission.trade_km": {
+    "defaultMessage": "Km d'échange",
+    "description": "Label for trade_km field"
+  },
+  "data_submission.unique_unown": {
+    "defaultMessage": "Unown uniques",
+    "description": "Label for unique_unown field"
+  },
+  "data_submission.dex_gen1": {
+    "defaultMessage": "Gen 1",
+    "description": "Label for dex_gen1 field"
+  },
+  "data_submission.dex_gen2": {
+    "defaultMessage": "Gen 2",
+    "description": "Label for dex_gen2 field"
+  },
+  "data_submission.dex_gen3": {
+    "defaultMessage": "Gen 3",
+    "description": "Label for dex_gen3 field"
+  },
+  "data_submission.dex_gen4": {
+    "defaultMessage": "Gen 4",
+    "description": "Label for dex_gen4 field"
+  },
+  "data_submission.dex_gen5": {
+    "defaultMessage": "Gen 5",
+    "description": "Label for dex_gen5 field"
+  },
+  "data_submission.dex_gen6": {
+    "defaultMessage": "Gen 6",
+    "description": "Label for dex_gen6 field"
+  },
+  "data_submission.dex_gen7": {
+    "defaultMessage": "Gen 7",
+    "description": "Label for dex_gen7 field"
+  },
+  "data_submission.dex_gen8": {
+    "defaultMessage": "Gen 8",
+    "description": "Label for dex_gen8 field"
+  },
+  "data_submission.dex_gen8a": {
+    "defaultMessage": "Hisui",
+    "description": "Label for dex_gen8a field"
+  },
+  "data_submission.dex_gen9": {
+    "defaultMessage": "Gen 9",
+    "description": "Label for dex_gen9 field"
+  },
+  "data_submission.caught_normal": {
+    "defaultMessage": "Capturé Normal",
+    "description": "Label for caught_normal field"
+  },
+  "data_submission.caught_fighting": {
+    "defaultMessage": "Capturé Combat",
+    "description": "Label for caught_fighting field"
+  },
+  "data_submission.caught_flying": {
+    "defaultMessage": "Capturé Vol",
+    "description": "Label for caught_flying field"
+  },
+  "data_submission.caught_poison": {
+    "defaultMessage": "Capturé Poison",
+    "description": "Label for caught_poison field"
+  },
+  "data_submission.caught_ground": {
+    "defaultMessage": "Capturé Sol",
+    "description": "Label for caught_ground field"
+  },
+  "data_submission.caught_rock": {
+    "defaultMessage": "Capturé Roche",
+    "description": "Label for caught_rock field"
+  },
+  "data_submission.caught_bug": {
+    "defaultMessage": "Capturé Insecte",
+    "description": "Label for caught_bug field"
+  },
+  "data_submission.caught_ghost": {
+    "defaultMessage": "Capturé Spectre",
+    "description": "Label for caught_ghost field"
+  },
+  "data_submission.caught_steel": {
+    "defaultMessage": "Capturé Acier",
+    "description": "Label for caught_steel field"
+  },
+  "data_submission.caught_fire": {
+    "defaultMessage": "Capturé Feu",
+    "description": "Label for caught_fire field"
+  },
+  "data_submission.caught_water": {
+    "defaultMessage": "Capturé Eau",
+    "description": "Label for caught_water field"
+  },
+  "data_submission.caught_grass": {
+    "defaultMessage": "Capturé Plante",
+    "description": "Label for caught_grass field"
+  },
+  "data_submission.caught_electric": {
+    "defaultMessage": "Capturé Électrik",
+    "description": "Label for caught_electric field"
+  },
+  "data_submission.caught_psychic": {
+    "defaultMessage": "Capturé Psy",
+    "description": "Label for caught_psychic field"
+  },
+  "data_submission.caught_ice": {
+    "defaultMessage": "Capturé Glace",
+    "description": "Label for caught_ice field"
+  },
+  "data_submission.caught_dragon": {
+    "defaultMessage": "Capturé Dragon",
+    "description": "Label for caught_dragon field"
+  },
+  "data_submission.caught_dark": {
+    "defaultMessage": "Capturé Ténèbres",
+    "description": "Label for caught_dark field"
+  },
+  "data_submission.caught_fairy": {
+    "defaultMessage": "Capturé Féee",
+    "description": "Label for caught_fairy field"
+  },
+  "header.submit_data": {
+    "defaultMessage": "Soumettre des données",
+    "description": "Navigation link to data submission page"
   }
 }

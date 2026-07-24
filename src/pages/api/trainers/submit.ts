@@ -146,10 +146,10 @@ export default async (request: NextApiRequest, response: NextApiResponse<ApiResp
         column === 'km_walked' || column === 'trade_km'
           ? parseFloat(String(value))
           : typeof value === 'string'
-            ? parseInt(value, 10)
-            : typeof value === 'number'
-              ? value
-              : null;
+          ? parseInt(value, 10)
+          : typeof value === 'number'
+          ? value
+          : null;
       values.push(parsed);
     }
   }

@@ -1,131 +1,113 @@
 # [7.3.0](https://github.com/na-ji/leaderboard/compare/v7.2.0...v7.3.0) (2025-04-12)
 
-
 ### Features
 
-* add Community Member, Expert Navigator & Life of the Party badges ([299906d](https://github.com/na-ji/leaderboard/commit/299906ddec325992989b48790bb619728ce10811))
-* add missing badge icons ([6f250ba](https://github.com/na-ji/leaderboard/commit/6f250ba155a7bf5ce3a1945683b638815b447382))
+- add Community Member, Expert Navigator & Life of the Party badges ([299906d](https://github.com/na-ji/leaderboard/commit/299906ddec325992989b48790bb619728ce10811))
+- add missing badge icons ([6f250ba](https://github.com/na-ji/leaderboard/commit/6f250ba155a7bf5ce3a1945683b638815b447382))
 
 # [7.2.0](https://github.com/na-ji/leaderboard/compare/v7.1.3...v7.2.0) (2025-04-12)
 
-
 ### Bug Fixes
 
-* fix german translations ([#761](https://github.com/na-ji/leaderboard/issues/761)) ([4a6341d](https://github.com/na-ji/leaderboard/commit/4a6341d5dea9514f341514212e0af5228375eba7))
-* fix middleware not matching any path ([a3d247c](https://github.com/na-ji/leaderboard/commit/a3d247c328b05b9f5788cdbc9c8ba73f183c574a))
-* overall query ([#774](https://github.com/na-ji/leaderboard/issues/774)) ([4e87268](https://github.com/na-ji/leaderboard/commit/4e872686083f78049c7b8c93387d740e7717d886))
-* prevent infinite redirect loop ([8e18ca2](https://github.com/na-ji/leaderboard/commit/8e18ca2c330ced873057b197856de54716b5d27d))
-
+- fix german translations ([#761](https://github.com/na-ji/leaderboard/issues/761)) ([4a6341d](https://github.com/na-ji/leaderboard/commit/4a6341d5dea9514f341514212e0af5228375eba7))
+- fix middleware not matching any path ([a3d247c](https://github.com/na-ji/leaderboard/commit/a3d247c328b05b9f5788cdbc9c8ba73f183c574a))
+- overall query ([#774](https://github.com/na-ji/leaderboard/issues/774)) ([4e87268](https://github.com/na-ji/leaderboard/commit/4e872686083f78049c7b8c93387d740e7717d886))
+- prevent infinite redirect loop ([8e18ca2](https://github.com/na-ji/leaderboard/commit/8e18ca2c330ced873057b197856de54716b5d27d))
 
 ### Features
 
-* add gen 9 and showcase badges support ([b434cfe](https://github.com/na-ji/leaderboard/commit/b434cfe2c4e4fd5c77337dd2a8be3590efc42b26))
+- add gen 9 and showcase badges support ([b434cfe](https://github.com/na-ji/leaderboard/commit/b434cfe2c4e4fd5c77337dd2a8be3590efc42b26))
 
 ## [7.1.3](https://github.com/na-ji/leaderboard/compare/v7.1.2...v7.1.3) (2023-10-05)
 
-
 ### Bug Fixes
 
-* fix server not starting ([239d1f4](https://github.com/na-ji/leaderboard/commit/239d1f428aabce04f31ec7056fbe6b47881b7308))
+- fix server not starting ([239d1f4](https://github.com/na-ji/leaderboard/commit/239d1f428aabce04f31ec7056fbe6b47881b7308))
 
 ## [7.1.2](https://github.com/na-ji/leaderboard/compare/v7.1.1...v7.1.2) (2023-04-20)
 
-
 ### Bug Fixes
 
-* **auth:** check role on every guild the user is member of ([5052795](https://github.com/na-ji/leaderboard/commit/50527959007a14d25ce5b43c0a0ad223d406f52e))
+- **auth:** check role on every guild the user is member of ([5052795](https://github.com/na-ji/leaderboard/commit/50527959007a14d25ce5b43c0a0ad223d406f52e))
 
 ## [7.1.1](https://github.com/na-ji/leaderboard/compare/v7.1.0...v7.1.1) (2023-04-12)
 
-
 ### Bug Fixes
 
-* fix server not starting with ESM modules ([00e0904](https://github.com/na-ji/leaderboard/commit/00e090433492c05ff5a27131c22adc0d55db9621))
+- fix server not starting with ESM modules ([00e0904](https://github.com/na-ji/leaderboard/commit/00e090433492c05ff5a27131c22adc0d55db9621))
 
 # [7.1.0](https://github.com/na-ji/leaderboard/compare/v7.0.0...v7.1.0) (2023-04-04)
 
-
 ### Bug Fixes
 
-* **profile:** fix last seen displaying wrong time ([06b9a5e](https://github.com/na-ji/leaderboard/commit/06b9a5e96e82cf7c87229669e9683ea9d8196113))
-
+- **profile:** fix last seen displaying wrong time ([06b9a5e](https://github.com/na-ji/leaderboard/commit/06b9a5e96e82cf7c87229669e9683ea9d8196113))
 
 ### Features
 
-* **profile:** add tooltip to last seen displaying full datetime ([3c8ffcc](https://github.com/na-ji/leaderboard/commit/3c8ffccb51f01e7c6189cb1d0fd3d07c1ae6327c))
-* **profile:** display badge icon depending on tier ([d34954f](https://github.com/na-ji/leaderboard/commit/d34954f4d3a56ca5e2f1e4d5fffa7e941fab8e5d)), closes [#489](https://github.com/na-ji/leaderboard/issues/489)
+- **profile:** add tooltip to last seen displaying full datetime ([3c8ffcc](https://github.com/na-ji/leaderboard/commit/3c8ffccb51f01e7c6189cb1d0fd3d07c1ae6327c))
+- **profile:** display badge icon depending on tier ([d34954f](https://github.com/na-ji/leaderboard/commit/d34954f4d3a56ca5e2f1e4d5fffa7e941fab8e5d)), closes [#489](https://github.com/na-ji/leaderboard/issues/489)
 
 # [7.0.0](https://github.com/na-ji/leaderboard/compare/v6.0.6...v7.0.0) (2023-03-21)
 
-
 ### Features
 
-* add support for friend code scanning ([745b8bf](https://github.com/na-ji/leaderboard/commit/745b8bf2ae23512e1268c28ea56cf64e4bf62921))
-* fetch profile page depending on trainer name instead of friendship id ([d18512b](https://github.com/na-ji/leaderboard/commit/d18512b6a883f772717ab5b9c574d3a24c65f0ad)), closes [#488](https://github.com/na-ji/leaderboard/issues/488)
-
+- add support for friend code scanning ([745b8bf](https://github.com/na-ji/leaderboard/commit/745b8bf2ae23512e1268c28ea56cf64e4bf62921))
+- fetch profile page depending on trainer name instead of friendship id ([d18512b](https://github.com/na-ji/leaderboard/commit/d18512b6a883f772717ab5b9c574d3a24c65f0ad)), closes [#488](https://github.com/na-ji/leaderboard/issues/488)
 
 ### BREAKING CHANGES
 
-* Player profile URL now uses trainer name instead of friendship ID.
-You will get a 404 page not found on previous URLs.
+- Player profile URL now uses trainer name instead of friendship ID.
+  You will get a 404 page not found on previous URLs.
 
 ## [6.0.6](https://github.com/na-ji/leaderboard/compare/v6.0.5...v6.0.6) (2023-03-10)
 
-
 ### Bug Fixes
 
-* prevent build from crashing when GO battle league is over ([ac2e580](https://github.com/na-ji/leaderboard/commit/ac2e5804a8a89a00f844f12cab55849657e85758))
+- prevent build from crashing when GO battle league is over ([ac2e580](https://github.com/na-ji/leaderboard/commit/ac2e5804a8a89a00f844f12cab55849657e85758))
 
 ## [6.0.5](https://github.com/na-ji/leaderboard/compare/v6.0.4...v6.0.5) (2023-02-22)
 
-
 ### Bug Fixes
 
-* **auth:** properly log errors when using discord API ([27381b3](https://github.com/na-ji/leaderboard/commit/27381b3199c52214d59c7d5cca0385770a723de1))
+- **auth:** properly log errors when using discord API ([27381b3](https://github.com/na-ji/leaderboard/commit/27381b3199c52214d59c7d5cca0385770a723de1))
 
 ## [6.0.4](https://github.com/na-ji/leaderboard/compare/v6.0.3...v6.0.4) (2023-02-17)
 
-
 ### Bug Fixes
 
-* **period-leaderboard:** fix progression defaulting to 0 when a value is new ([54d36cf](https://github.com/na-ji/leaderboard/commit/54d36cf23b797f415690e1f409accaf1cb8048ff))
+- **period-leaderboard:** fix progression defaulting to 0 when a value is new ([54d36cf](https://github.com/na-ji/leaderboard/commit/54d36cf23b797f415690e1f409accaf1cb8048ff))
 
 ## [6.0.3](https://github.com/na-ji/leaderboard/compare/v6.0.2...v6.0.3) (2023-02-17)
 
-
 ### Bug Fixes
 
-* **config:** set default role id to empty array ([a76ac33](https://github.com/na-ji/leaderboard/commit/a76ac33c7b5ad32e7d4eee38304239bfcbff8766))
-* **discord-auth:** check if config is correct before taking decision on providing access ([8331275](https://github.com/na-ji/leaderboard/commit/8331275eb3ce291c834f146f582c5cb9aac19db7))
-* **period-leaderboard:** fix missing columns when computing progression ([395a155](https://github.com/na-ji/leaderboard/commit/395a155476b9537e83668cea4ab29d6436d4543c))
+- **config:** set default role id to empty array ([a76ac33](https://github.com/na-ji/leaderboard/commit/a76ac33c7b5ad32e7d4eee38304239bfcbff8766))
+- **discord-auth:** check if config is correct before taking decision on providing access ([8331275](https://github.com/na-ji/leaderboard/commit/8331275eb3ce291c834f146f582c5cb9aac19db7))
+- **period-leaderboard:** fix missing columns when computing progression ([395a155](https://github.com/na-ji/leaderboard/commit/395a155476b9537e83668cea4ab29d6436d4543c))
 
 ## [6.0.2](https://github.com/na-ji/leaderboard/compare/v6.0.1...v6.0.2) (2023-02-13)
 
-
 ### Bug Fixes
 
-* correctly set PORT before starting nextjs server ([fa9cb22](https://github.com/na-ji/leaderboard/commit/fa9cb22dd524a16919b70b8c23fc18c669af3b82))
+- correctly set PORT before starting nextjs server ([fa9cb22](https://github.com/na-ji/leaderboard/commit/fa9cb22dd524a16919b70b8c23fc18c669af3b82))
 
 ## [6.0.1](https://github.com/na-ji/leaderboard/compare/v6.0.0...v6.0.1) (2023-02-13)
 
-
 ### Bug Fixes
 
-* **periodleaderboard:** fix period query breaking because of negative results ([d1f6634](https://github.com/na-ji/leaderboard/commit/d1f663419716d72c55c1d27bfe578ac566f8102c))
+- **periodleaderboard:** fix period query breaking because of negative results ([d1f6634](https://github.com/na-ji/leaderboard/commit/d1f663419716d72c55c1d27bfe578ac566f8102c))
 
 # [6.0.0](https://github.com/na-ji/leaderboard/compare/v5.5.1...v6.0.0) (2023-02-13)
 
-
 ### Features
 
-* add four new badges ([f1f1cc2](https://github.com/na-ji/leaderboard/commit/f1f1cc281a583a28e9325b2393fd0d158e50b4ed))
-* migrate to Golbat backend ([26c3cf0](https://github.com/na-ji/leaderboard/commit/26c3cf07221573b82744321e0c8706c305fa71b0))
-
+- add four new badges ([f1f1cc2](https://github.com/na-ji/leaderboard/commit/f1f1cc281a583a28e9325b2393fd0d158e50b4ed))
+- migrate to Golbat backend ([26c3cf0](https://github.com/na-ji/leaderboard/commit/26c3cf07221573b82744321e0c8706c305fa71b0))
 
 ### BREAKING CHANGES
 
-* The schema is now based on Golbat backend. See the migration guide in
-`MIGRATION.md`.
+- The schema is now based on Golbat backend. See the migration guide in
+  `MIGRATION.md`.
 
 ## [5.5.1](https://github.com/v-mapper/leaderboard/compare/v5.5.0...v5.5.1) (2022-05-02)
 

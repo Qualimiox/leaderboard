@@ -156,18 +156,18 @@ const DataSubmissionPage: NextPage = () => {
 
       <h1 className="title-1 mt-2.5 lg:mt-0.5">{title}</h1>
 
-      {submitMessage && (
-        <div className="my-3 rounded bg-green text-black p-2">{submitMessage}</div>
-      )}
-      {errorMessage && (
-        <div className="my-3 rounded bg-red text-black p-2">{errorMessage}</div>
-      )}
+      {submitMessage && <div className="my-3 rounded bg-green text-black p-2">{submitMessage}</div>}
+      {errorMessage && <div className="my-3 rounded bg-red text-black p-2">{errorMessage}</div>}
 
       <form onSubmit={handleSubmit} noValidate autoComplete="off" className="space-y-6">
         {/* General Info */}
         <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
           <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage id="data_submission.general_info" defaultMessage="General Info" description="Section header for general info" />
+            <FormattedMessage
+              id="data_submission.general_info"
+              defaultMessage="General Info"
+              description="Section header for general info"
+            />
           </legend>
           <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
             {renderField('friendship_id', 'data_submission.friendship_id', 'Friendship ID', 'text')}
@@ -196,7 +196,11 @@ const DataSubmissionPage: NextPage = () => {
         {/* Battles & Gym */}
         <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
           <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage id="data_submission.battles_gym" defaultMessage="Battles & Gym" description="Section header for battles and gym stats" />
+            <FormattedMessage
+              id="data_submission.battles_gym"
+              defaultMessage="Battles & Gym"
+              description="Section header for battles and gym stats"
+            />
           </legend>
           <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
             {renderField('battles_won', 'data_submission.battles_won', 'Battles Won')}
@@ -208,7 +212,11 @@ const DataSubmissionPage: NextPage = () => {
         {/* Raids */}
         <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
           <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage id="data_submission.raids" defaultMessage="Raids" description="Section header for raid stats" />
+            <FormattedMessage
+              id="data_submission.raids"
+              defaultMessage="Raids"
+              description="Section header for raid stats"
+            />
           </legend>
           <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
             {renderField('normal_raids_won', 'data_submission.normal_raids_won', 'Normal Raids Won')}
@@ -240,7 +248,11 @@ const DataSubmissionPage: NextPage = () => {
         {/* Social */}
         <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
           <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage id="data_submission.social" defaultMessage="Social" description="Section header for social stats" />
+            <FormattedMessage
+              id="data_submission.social"
+              defaultMessage="Social"
+              description="Section header for social stats"
+            />
           </legend>
           <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
             {renderField('trades', 'data_submission.trades', 'Trades')}
@@ -255,7 +267,11 @@ const DataSubmissionPage: NextPage = () => {
         {/* League (PvP) */}
         <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
           <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage id="data_submission.league_pvp" defaultMessage="League (PvP)" description="Section header for league PvP stats" />
+            <FormattedMessage
+              id="data_submission.league_pvp"
+              defaultMessage="League (PvP)"
+              description="Section header for league PvP stats"
+            />
           </legend>
           <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
             {renderField('gbl_rank', 'data_submission.gbl_rank', 'GBL Rank')}
@@ -269,7 +285,11 @@ const DataSubmissionPage: NextPage = () => {
         {/* Stops & Quests */}
         <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
           <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage id="data_submission.stops_quests" defaultMessage="Stops & Quests" description="Section header for stops and quests stats" />
+            <FormattedMessage
+              id="data_submission.stops_quests"
+              defaultMessage="Stops & Quests"
+              description="Section header for stops and quests stats"
+            />
           </legend>
           <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
             {renderField('stops_spun', 'data_submission.stops_spun', 'Stops Spun')}
@@ -283,7 +303,11 @@ const DataSubmissionPage: NextPage = () => {
         {/* Special Pokémon */}
         <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
           <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage id="data_submission.special_pokemon" defaultMessage="Special Pokémon" description="Section header for special pokemon stats" />
+            <FormattedMessage
+              id="data_submission.special_pokemon"
+              defaultMessage="Special Pokémon"
+              description="Section header for special pokemon stats"
+            />
           </legend>
           <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
             {renderField('vivillon', 'data_submission.vivillon', 'Vivillon')}
@@ -365,7 +389,11 @@ const DataSubmissionPage: NextPage = () => {
         {/* Unique Unown */}
         <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
           <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage id="data_submission.unique_unown_section" defaultMessage="Unique Unown" description="Section header for unique unown stat" />
+            <FormattedMessage
+              id="data_submission.unique_unown_section"
+              defaultMessage="Unique Unown"
+              description="Section header for unique unown stat"
+            />
           </legend>
           <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
             {renderField('unique_unown', 'data_submission.unique_unown', 'Unique Unown')}
@@ -375,7 +403,11 @@ const DataSubmissionPage: NextPage = () => {
         {/* Pokédex */}
         <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
           <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage id="data_submission.pokedex" defaultMessage="Pokédex" description="Section header for Pokedex stats" />
+            <FormattedMessage
+              id="data_submission.pokedex"
+              defaultMessage="Pokédex"
+              description="Section header for Pokedex stats"
+            />
           </legend>
           <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-4">
             {renderField('dex_gen1', 'data_submission.dex_gen1', 'Gen 1')}
@@ -423,7 +455,11 @@ const DataSubmissionPage: NextPage = () => {
         </fieldset>
 
         <Button type="submit" disabled={isSubmitting} className="px-3">
-          <FormattedMessage id="data_submission.submit_button" defaultMessage="Submit Data" description="Submit button for data submission form" />
+          <FormattedMessage
+            id="data_submission.submit_button"
+            defaultMessage="Submit Data"
+            description="Submit button for data submission form"
+          />
         </Button>
       </form>
     </>

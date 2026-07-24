@@ -120,7 +120,7 @@ export default async (request: NextApiRequest, response: NextApiResponse<ApiResp
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    const trainerName = (session as Record<string, unknown>).trainerName as string | undefined;
+    const trainerName = (session as unknown as Record<string, unknown>).trainerName as string | undefined;
     if (!trainerName) {
       response.status(400).json({ success: false, message: 'Trainer name not found in session' });
       return;

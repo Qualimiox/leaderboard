@@ -142,12 +142,12 @@ export default async (request: NextApiRequest, response: NextApiResponse<ApiResp
     if (value !== undefined && value !== null && value !== '') {
       fields.push(column);
       // Convert numeric strings to numbers, keep strings as-is
-      const numValue = column === 'km_walked' || column === 'trade_km'
+      const parsed = column === 'km_walked' || column === 'trade_km'
         ? parseFloat(String(value))
         : typeof value === 'string'
           ? parseInt(value, 10)
-          : value;
-      values.push(Number.isNaN(numValue) ? null : numValue);
+          : (typeof value === 'number' ? value : null);
+      values.push(parsed);
     }
   }
 

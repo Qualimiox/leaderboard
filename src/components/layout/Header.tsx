@@ -19,7 +19,11 @@ export const Header = ({ enableAuth }: HeaderProps): JSX.Element => {
       {enableAuth && (
         <div className="flex items-center gap-4">
           <Link href="/data-submission" className="hover:underline">
-            <FormattedMessage defaultMessage="Submit Data" id="header.submit_data" description="Navigation link to data submission page" />
+            <FormattedMessage
+              defaultMessage="Submit Data"
+              id="header.submit_data"
+              description="Navigation link to data submission page"
+            />
           </Link>
           <a href="#!" className="justify-self-end" onClick={() => signOut()}>
             <FormattedMessage defaultMessage="Logout" id="drawer.logout" description="Logout button" />

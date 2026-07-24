@@ -1091,6 +1091,82 @@
     "defaultMessage": "Capturé Féee",
     "description": "Label for caught_fairy field"
   },
+  "data_submission.loading": {
+    "defaultMessage": "Chargement...",
+    "description": "Loading indicator"
+  },
+  "data_submission.login_required": {
+    "defaultMessage": "Veuillez vous connecter pour soumettre des données.",
+    "description": "Login required message"
+  },
+  "data_submission.submit_button": {
+    "defaultMessage": "Soumettre les données",
+    "description": "Submit button for data submission form"
+  },
+  "data_submission.general_info": {
+    "defaultMessage": "Informations générales",
+    "description": "Section header for general info"
+  },
+  "data_submission.walking_catching": {
+    "defaultMessage": "Marche & Capture",
+    "description": "Section header for walking and catching stats"
+  },
+  "data_submission.battles_gym": {
+    "defaultMessage": "Batailles & Gym",
+    "description": "Section header for battles and gym stats"
+  },
+  "data_submission.raids": {
+    "defaultMessage": "Raids",
+    "description": "Section header for raid stats"
+  },
+  "data_submission.evolution_hatching": {
+    "defaultMessage": "Évolution & Éclosion",
+    "description": "Section header for evolution and hatching stats"
+  },
+  "data_submission.social": {
+    "defaultMessage": "Social",
+    "description": "Section header for social stats"
+  },
+  "data_submission.league_pvp": {
+    "defaultMessage": "Ligue (PvP)",
+    "description": "Section header for league PvP stats"
+  },
+  "data_submission.stops_quests": {
+    "defaultMessage": "Arrêts & Quêtes",
+    "description": "Section header for stops and quests stats"
+  },
+  "data_submission.special_pokemon": {
+    "defaultMessage": "Pokémon spéciaux",
+    "description": "Section header for special pokemon stats"
+  },
+  "data_submission.giovanni_collections": {
+    "defaultMessage": "Giovanni & Collections",
+    "description": "Section header for Giovanni and collections stats"
+  },
+  "data_submission.events_activities": {
+    "defaultMessage": "Événements & Activités",
+    "description": "Section header for events and activities stats"
+  },
+  "data_submission.streaks_lures": {
+    "defaultMessage": "Séries & Appâts",
+    "description": "Section header for streaks and lures stats"
+  },
+  "data_submission.wayfarer_trade": {
+    "defaultMessage": "Wayfarer & Échange",
+    "description": "Section header for Wayfarer and trade stats"
+  },
+  "data_submission.unique_unown_section": {
+    "defaultMessage": "Unown uniques",
+    "description": "Section header for unique unown stat"
+  },
+  "data_submission.pokedex": {
+    "defaultMessage": "Pokédex",
+    "description": "Section header for Pokedex stats"
+  },
+  "data_submission.type_specific_catches": {
+    "defaultMessage": "Captures par type",
+    "description": "Section header for type-specific catch stats"
+  },
   "header.submit_data": {
     "defaultMessage": "Soumettre des données",
     "description": "Navigation link to data submission page"

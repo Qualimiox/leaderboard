@@ -1103,6 +1103,82 @@
     "defaultMessage": "Caught Fairy",
     "description": "Label for caught_fairy field"
   },
+  "data_submission.general_info": {
+    "defaultMessage": "General Info",
+    "description": "Section header for general info"
+  },
+  "data_submission.walking_catching": {
+    "defaultMessage": "Walking & Catching",
+    "description": "Section header for walking and catching stats"
+  },
+  "data_submission.battles_gym": {
+    "defaultMessage": "Battles & Gym",
+    "description": "Section header for battles and gym stats"
+  },
+  "data_submission.raids": {
+    "defaultMessage": "Raids",
+    "description": "Section header for raid stats"
+  },
+  "data_submission.evolution_hatching": {
+    "defaultMessage": "Evolution & Hatching",
+    "description": "Section header for evolution and hatching stats"
+  },
+  "data_submission.social": {
+    "defaultMessage": "Social",
+    "description": "Section header for social stats"
+  },
+  "data_submission.league_pvp": {
+    "defaultMessage": "League (PvP)",
+    "description": "Section header for league PvP stats"
+  },
+  "data_submission.stops_quests": {
+    "defaultMessage": "Stops & Quests",
+    "description": "Section header for stops and quests stats"
+  },
+  "data_submission.special_pokemon": {
+    "defaultMessage": "Special Pokémon",
+    "description": "Section header for special pokemon stats"
+  },
+  "data_submission.giovanni_collections": {
+    "defaultMessage": "Giovanni & Collections",
+    "description": "Section header for Giovanni and collections stats"
+  },
+  "data_submission.events_activities": {
+    "defaultMessage": "Events & Activities",
+    "description": "Section header for events and activities stats"
+  },
+  "data_submission.streaks_lures": {
+    "defaultMessage": "Streaks & Lures",
+    "description": "Section header for streaks and lures stats"
+  },
+  "data_submission.wayfarer_trade": {
+    "defaultMessage": "Wayfarer & Trade",
+    "description": "Section header for Wayfarer and trade stats"
+  },
+  "data_submission.unique_unown_section": {
+    "defaultMessage": "Unique Unown",
+    "description": "Section header for unique unown stat"
+  },
+  "data_submission.pokedex": {
+    "defaultMessage": "Pokédex",
+    "description": "Section header for Pokedex stats"
+  },
+  "data_submission.type_specific_catches": {
+    "defaultMessage": "Type-specific Catches",
+    "description": "Section header for type-specific catch stats"
+  },
+  "data_submission.loading": {
+    "defaultMessage": "Loading...",
+    "description": "Loading indicator"
+  },
+  "data_submission.login_required": {
+    "defaultMessage": "Please log in to submit data.",
+    "description": "Login required message"
+  },
+  "data_submission.submit_button": {
+    "defaultMessage": "Submit Data",
+    "description": "Submit button for data submission form"
+  },
   "header.submit_data": {
     "defaultMessage": "Submit Data",
     "description": "Navigation link to data submission page"

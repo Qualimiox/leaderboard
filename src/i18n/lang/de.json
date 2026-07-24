@@ -1103,6 +1103,82 @@
     "defaultMessage": "Gefangene Fee-Pokémon",
     "description": "Label for caught_fairy field"
   },
+  "data_submission.loading": {
+    "defaultMessage": "Laden...",
+    "description": "Loading indicator"
+  },
+  "data_submission.login_required": {
+    "defaultMessage": "Bitte logge dich ein, um Daten zu übermitteln.",
+    "description": "Login required message"
+  },
+  "data_submission.submit_button": {
+    "defaultMessage": "Daten einreichen",
+    "description": "Submit button for data submission form"
+  },
+  "data_submission.general_info": {
+    "defaultMessage": "Allgemeine Info",
+    "description": "Section header for general info"
+  },
+  "data_submission.walking_catching": {
+    "defaultMessage": "Laufen & Fangen",
+    "description": "Section header for walking and catching stats"
+  },
+  "data_submission.battles_gym": {
+    "defaultMessage": "Kämpfe & Gymnasium",
+    "description": "Section header for battles and gym stats"
+  },
+  "data_submission.raids": {
+    "defaultMessage": "Raid-Kämpfe",
+    "description": "Section header for raid stats"
+  },
+  "data_submission.evolution_hatching": {
+    "defaultMessage": "Evolution & Schlüpfen",
+    "description": "Section header for evolution and hatching stats"
+  },
+  "data_submission.social": {
+    "defaultMessage": "Sozial",
+    "description": "Section header for social stats"
+  },
+  "data_submission.league_pvp": {
+    "defaultMessage": "Liga (PvP)",
+    "description": "Section header for league PvP stats"
+  },
+  "data_submission.stops_quests": {
+    "defaultMessage": "Haltestellen & Quests",
+    "description": "Section header for stops and quests stats"
+  },
+  "data_submission.special_pokemon": {
+    "defaultMessage": "Spezielle Pokémon",
+    "description": "Section header for special pokemon stats"
+  },
+  "data_submission.giovanni_collections": {
+    "defaultMessage": "Giovanni & Sammlungen",
+    "description": "Section header for Giovanni and collections stats"
+  },
+  "data_submission.events_activities": {
+    "defaultMessage": "Events & Aktivitäten",
+    "description": "Section header for events and activities stats"
+  },
+  "data_submission.streaks_lures": {
+    "defaultMessage": "Serien & Lockmodul",
+    "description": "Section header for streaks and lures stats"
+  },
+  "data_submission.wayfarer_trade": {
+    "defaultMessage": "Wayfarer & Tausch",
+    "description": "Section header for Wayfarer and trade stats"
+  },
+  "data_submission.unique_unown_section": {
+    "defaultMessage": "Einzigartiges Unown",
+    "description": "Section header for unique unown stat"
+  },
+  "data_submission.pokedex": {
+    "defaultMessage": "Pokédex",
+    "description": "Section header for Pokedex stats"
+  },
+  "data_submission.type_specific_catches": {
+    "defaultMessage": "Typ-spezifische Fänge",
+    "description": "Section header for type-specific catch stats"
+  },
   "header.submit_data": {
     "defaultMessage": "Daten einreichen",
     "description": "Navigation link to data submission page"

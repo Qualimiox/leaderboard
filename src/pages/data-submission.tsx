@@ -102,7 +102,12 @@ const DataSubmissionPage: NextPage = () => {
           type={type}
           className="mt-1 block w-full rounded border border-gray-300 bg-white px-2 py-1 text-sm dark:border-gray-600 dark:bg-gray-800"
           value={(formData[field] ?? '') as string}
-          onChange={(e) => handleChange(field, type === 'number' ? (e.target.value ? parseFloat(e.target.value) : null) : e.target.value || null)}
+          onChange={(e) =>
+            handleChange(
+              field,
+              type === 'number' ? (e.target.value ? parseFloat(e.target.value) : null) : e.target.value || null,
+            )
+          }
         />
       </label>
     </div>
@@ -111,7 +116,7 @@ const DataSubmissionPage: NextPage = () => {
   if (status === 'loading' || isLoading) {
     return (
       <div className="flex justify-center py-10">
-        <FormattedMessage defaultMessage="Loading..." description="Loading indicator" />
+        <FormattedMessage id="data_submission.loading" defaultMessage="Loading..." description="Loading indicator" />
       </div>
     );
   }
@@ -119,7 +124,11 @@ const DataSubmissionPage: NextPage = () => {
   if (!trainerName) {
     return (
       <div className="py-10 text-center">
-        <FormattedMessage defaultMessage="Please log in to submit data." description="Login required message" />
+        <FormattedMessage
+          id="data_submission.login_required"
+          defaultMessage="Please log in to submit data."
+          description="Login required message"
+        />
       </div>
     );
   }
@@ -148,21 +157,17 @@ const DataSubmissionPage: NextPage = () => {
       <h1 className="title-1 mt-2.5 lg:mt-0.5">{title}</h1>
 
       {submitMessage && (
-        <div className="my-3 rounded bg-green text-black p-2">
-          {submitMessage}
-        </div>
+        <div className="my-3 rounded bg-green text-black p-2">{submitMessage}</div>
       )}
       {errorMessage && (
-        <div className="my-3 rounded bg-red text-black p-2">
-          {errorMessage}
-        </div>
+        <div className="my-3 rounded bg-red text-black p-2">{errorMessage}</div>
       )}
 
       <form onSubmit={handleSubmit} noValidate autoComplete="off" className="space-y-6">
         {/* General Info */}
         <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
           <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage defaultMessage="General Info" description="Section header for general info" />
+            <FormattedMessage id="data_submission.general_info" defaultMessage="General Info" description="Section header for general info" />
           </legend>
           <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
             {renderField('friendship_id', 'data_submission.friendship_id', 'Friendship ID', 'text')}
@@ -176,7 +181,11 @@ const DataSubmissionPage: NextPage = () => {
         {/* Walking & Catching */}
         <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
           <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage defaultMessage="Walking & Catching" description="Section header for walking and catching stats" />
+            <FormattedMessage
+              id="data_submission.walking_catching"
+              defaultMessage="Walking & Catching"
+              description="Section header for walking and catching stats"
+            />
           </legend>
           <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
             {renderField('km_walked', 'data_submission.km_walked', 'Km Walked')}
@@ -187,7 +196,7 @@ const DataSubmissionPage: NextPage = () => {
         {/* Battles & Gym */}
         <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
           <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage defaultMessage="Battles & Gym" description="Section header for battles and gym stats" />
+            <FormattedMessage id="data_submission.battles_gym" defaultMessage="Battles & Gym" description="Section header for battles and gym stats" />
           </legend>
           <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
             {renderField('battles_won', 'data_submission.battles_won', 'Battles Won')}
@@ -199,7 +208,7 @@ const DataSubmissionPage: NextPage = () => {
         {/* Raids */}
         <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
           <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage defaultMessage="Raids" description="Section header for raid stats" />
+            <FormattedMessage id="data_submission.raids" defaultMessage="Raids" description="Section header for raid stats" />
           </legend>
           <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
             {renderField('normal_raids_won', 'data_submission.normal_raids_won', 'Normal Raids Won')}
@@ -214,7 +223,11 @@ const DataSubmissionPage: NextPage = () => {
         {/* Evolution & Hatching */}
         <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
           <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage defaultMessage="Evolution & Hatching" description="Section header for evolution and hatching stats" />
+            <FormattedMessage
+              id="data_submission.evolution_hatching"
+              defaultMessage="Evolution & Hatching"
+              description="Section header for evolution and hatching stats"
+            />
           </legend>
           <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
             {renderField('evolved', 'data_submission.evolved', 'Evolved')}
@@ -227,7 +240,7 @@ const DataSubmissionPage: NextPage = () => {
         {/* Social */}
         <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
           <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage defaultMessage="Social" description="Section header for social stats" />
+            <FormattedMessage id="data_submission.social" defaultMessage="Social" description="Section header for social stats" />
           </legend>
           <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
             {renderField('trades', 'data_submission.trades', 'Trades')}
@@ -242,7 +255,7 @@ const DataSubmissionPage: NextPage = () => {
         {/* League (PvP) */}
         <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
           <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage defaultMessage="League (PvP)" description="Section header for league PvP stats" />
+            <FormattedMessage id="data_submission.league_pvp" defaultMessage="League (PvP)" description="Section header for league PvP stats" />
           </legend>
           <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
             {renderField('gbl_rank', 'data_submission.gbl_rank', 'GBL Rank')}
@@ -256,7 +269,7 @@ const DataSubmissionPage: NextPage = () => {
         {/* Stops & Quests */}
         <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
           <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage defaultMessage="Stops & Quests" description="Section header for stops and quests stats" />
+            <FormattedMessage id="data_submission.stops_quests" defaultMessage="Stops & Quests" description="Section header for stops and quests stats" />
           </legend>
           <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
             {renderField('stops_spun', 'data_submission.stops_spun', 'Stops Spun')}
@@ -270,7 +283,7 @@ const DataSubmissionPage: NextPage = () => {
         {/* Special Pokémon */}
         <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
           <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage defaultMessage="Special Pokémon" description="Section header for special pokemon stats" />
+            <FormattedMessage id="data_submission.special_pokemon" defaultMessage="Special Pokémon" description="Section header for special pokemon stats" />
           </legend>
           <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
             {renderField('vivillon', 'data_submission.vivillon', 'Vivillon')}
@@ -285,7 +298,11 @@ const DataSubmissionPage: NextPage = () => {
         {/* Giovanni & Collections */}
         <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
           <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage defaultMessage="Giovanni & Collections" description="Section header for Giovanni and collections stats" />
+            <FormattedMessage
+              id="data_submission.giovanni_collections"
+              defaultMessage="Giovanni & Collections"
+              description="Section header for Giovanni and collections stats"
+            />
           </legend>
           <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
             {renderField('giovanni_defeated', 'data_submission.giovanni_defeated', 'Giovanni Defeated')}
@@ -296,11 +313,19 @@ const DataSubmissionPage: NextPage = () => {
         {/* Events & Activities */}
         <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
           <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage defaultMessage="Events & Activities" description="Section header for events and activities stats" />
+            <FormattedMessage
+              id="data_submission.events_activities"
+              defaultMessage="Events & Activities"
+              description="Section header for events and activities stats"
+            />
           </legend>
           <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
             {renderField('event_badges', 'data_submission.event_badges', 'Event Badges', 'text')}
-            {renderField('showcase_max_size_first_place', 'data_submission.showcase_max_size_first_place', 'Showcase Max Size 1st Place')}
+            {renderField(
+              'showcase_max_size_first_place',
+              'data_submission.showcase_max_size_first_place',
+              'Showcase Max Size 1st Place',
+            )}
             {renderField('total_route_play', 'data_submission.total_route_play', 'Total Route Play')}
             {renderField('parties_completed', 'data_submission.parties_completed', 'Parties Completed')}
             {renderField('event_check_ins', 'data_submission.event_check_ins', 'Event Check-ins')}
@@ -310,7 +335,11 @@ const DataSubmissionPage: NextPage = () => {
         {/* Streaks & Lures */}
         <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
           <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage defaultMessage="Streaks & Lures" description="Section header for streaks and lures stats" />
+            <FormattedMessage
+              id="data_submission.streaks_lures"
+              defaultMessage="Streaks & Lures"
+              description="Section header for streaks and lures stats"
+            />
           </legend>
           <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
             {renderField('seven_day_streaks', 'data_submission.seven_day_streaks', 'Seven Day Streaks')}
@@ -321,7 +350,11 @@ const DataSubmissionPage: NextPage = () => {
         {/* Wayfarer & Trade */}
         <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
           <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage defaultMessage="Wayfarer & Trade" description="Section header for Wayfarer and trade stats" />
+            <FormattedMessage
+              id="data_submission.wayfarer_trade"
+              defaultMessage="Wayfarer & Trade"
+              description="Section header for Wayfarer and trade stats"
+            />
           </legend>
           <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
             {renderField('wayfarer_agreements', 'data_submission.wayfarer_agreements', 'Wayfarer Agreements')}
@@ -332,7 +365,7 @@ const DataSubmissionPage: NextPage = () => {
         {/* Unique Unown */}
         <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
           <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage defaultMessage="Unique Unown" description="Section header for unique unown stat" />
+            <FormattedMessage id="data_submission.unique_unown_section" defaultMessage="Unique Unown" description="Section header for unique unown stat" />
           </legend>
           <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
             {renderField('unique_unown', 'data_submission.unique_unown', 'Unique Unown')}
@@ -342,7 +375,7 @@ const DataSubmissionPage: NextPage = () => {
         {/* Pokédex */}
         <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
           <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage defaultMessage="Pokédex" description="Section header for Pokedex stats" />
+            <FormattedMessage id="data_submission.pokedex" defaultMessage="Pokédex" description="Section header for Pokedex stats" />
           </legend>
           <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-4">
             {renderField('dex_gen1', 'data_submission.dex_gen1', 'Gen 1')}
@@ -361,7 +394,11 @@ const DataSubmissionPage: NextPage = () => {
         {/* Type-specific Catches */}
         <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
           <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage defaultMessage="Type-specific Catches" description="Section header for type-specific catch stats" />
+            <FormattedMessage
+              id="data_submission.type_specific_catches"
+              defaultMessage="Type-specific Catches"
+              description="Section header for type-specific catch stats"
+            />
           </legend>
           <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-4">
             {renderField('caught_normal', 'data_submission.caught_normal', 'Caught Normal')}
@@ -386,7 +423,7 @@ const DataSubmissionPage: NextPage = () => {
         </fieldset>
 
         <Button type="submit" disabled={isSubmitting} className="px-3">
-          <FormattedMessage defaultMessage="Submit Data" description="Submit button for data submission form" />
+          <FormattedMessage id="data_submission.submit_button" defaultMessage="Submit Data" description="Submit button for data submission form" />
         </Button>
       </form>
     </>

@@ -4,7 +4,7 @@ import { config } from 'node-config-ts';
 
 import { pool } from '@/database';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
-import { getTrainerByName, setUserTrainerName } from '@/features/auth/api';
+import { setUserTrainerName } from '@/features/auth/api';
 import { resolveConfig } from '@/utils/resolveConfig';
 
 interface ApiResponse {
@@ -133,12 +133,6 @@ export default async (request: NextApiRequest, response: NextApiResponse<ApiResp
         return;
       }
 
-      const existingTrainer = await getTrainerByName(formData.name);
-      if (!existingTrainer || typeof existingTrainer.name !== 'string') {
-        response.status(404).json({ success: false, message: 'Trainer not found in database' });
-        return;
-      }
-
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       const userId = (session as unknown as Record<string, unknown>).userId as string | undefined;
       if (!userId || typeof userId !== 'string') {
@@ -146,8 +140,8 @@ export default async (request: NextApiRequest, response: NextApiResponse<ApiResp
         return;
       }
 
-      await setUserTrainerName(userId, existingTrainer.name);
-      name = existingTrainer.name;
+      await setUserTrainerName(userId, formData.name);
+      name = formData.name;
     } else {
       name = trainerName;
     }

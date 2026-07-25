@@ -7,10 +7,93 @@ import { useState, useEffect, FormEvent, useCallback } from 'react';
 import { fetcher } from '@/utils/fetcher';
 import { Button } from '@/components/button';
 import { wrapStaticPropsWithLocale } from '@/utils/i18n';
+import { BadgeIcon } from '@/features/profile/components/BadgeIcon';
+import { Badge } from '@/types';
 
 interface TrainerData {
   [key: string]: string | number | null;
 }
+
+interface FormField {
+  field: string;
+  labelId: string;
+  labelText: string;
+  badge?: Badge;
+  type?: 'text' | 'number';
+}
+
+const FORM_FIELDS: FormField[] = [
+  { field: 'km_walked', labelId: 'data_submission.km_walked', labelText: 'Km Walked', badge: Badge.KM_WALKED },
+  { field: 'dex_gen1', labelId: 'data_submission.dex_gen1', labelText: 'Gen 1', badge: Badge.DEX_GEN_1 },
+  { field: 'caught_pokemon', labelId: 'data_submission.caught_pokemon', labelText: 'Caught Pokémon', badge: Badge.CAUGHT_POKEMON },
+  { field: 'evolved', labelId: 'data_submission.evolved', labelText: 'Evolved', badge: Badge.EVOLVED },
+  { field: 'hatched', labelId: 'data_submission.hatched', labelText: 'Hatched', badge: Badge.HATCHED },
+  { field: 'stops_spun', labelId: 'data_submission.stops_spun', labelText: 'Stops Spun', badge: Badge.STOPS_SPUN },
+  { field: 'unique_stops_spun', labelId: 'data_submission.unique_stops_spun', labelText: 'Unique Stops Spun', badge: Badge.UNIQUE_STOPS_SPUN },
+  { field: 'gym_battles_won', labelId: 'data_submission.gym_battles_won', labelText: 'Gym Battles Won', badge: Badge.GYM_BATTLES_WON },
+  { field: 'xl_karps', labelId: 'data_submission.xl_karps', labelText: 'XL Karps', badge: Badge.XL_KARPS },
+  { field: 'xs_rats', labelId: 'data_submission.xs_rats', labelText: 'XS Rats', badge: Badge.XS_RATS },
+  { field: 'pikachu_caught', labelId: 'data_submission.pikachu_caught', labelText: 'Pikachu Caught', badge: Badge.PIKACHU_CAUGHT },
+  { field: 'unique_unown', labelId: 'data_submission.unique_unown', labelText: 'Unique Unown', badge: Badge.UNIQUE_UNOWN },
+  { field: 'dex_gen2', labelId: 'data_submission.dex_gen2', labelText: 'Gen 2', badge: Badge.DEX_GEN_2 },
+  { field: 'normal_raids_won', labelId: 'data_submission.normal_raids_won', labelText: 'Normal Raids Won', badge: Badge.NORMAL_RAIDS_WON },
+  { field: 'legendary_raids_won', labelId: 'data_submission.legendary_raids_won', labelText: 'Legendary Raids Won', badge: Badge.LEGENDARY_RAIDS_WON },
+  { field: 'berries_fed', labelId: 'data_submission.berries_fed', labelText: 'Berries Fed', badge: Badge.BERRIES_FED },
+  { field: 'hours_defended', labelId: 'data_submission.hours_defended', labelText: 'Hours Defended', badge: Badge.HOURS_DEFENDED },
+  { field: 'dex_gen3', labelId: 'data_submission.dex_gen3', labelText: 'Gen 3', badge: Badge.DEX_GEN_3 },
+  { field: 'quests', labelId: 'data_submission.quests', labelText: 'Quests Completed', badge: Badge.QUESTS },
+  { field: 'best_friends', labelId: 'data_submission.best_friends', labelText: 'Best Friends', badge: Badge.BEST_FRIENDS },
+  { field: 'trades', labelId: 'data_submission.trades', labelText: 'Trades', badge: Badge.TRADES },
+  { field: 'trade_km', labelId: 'data_submission.trade_km', labelText: 'Trade Km', badge: Badge.TRADE_KM },
+  { field: 'dex_gen4', labelId: 'data_submission.dex_gen4', labelText: 'Gen 4', badge: Badge.DEX_GEN_4 },
+  { field: 'league_great_won', labelId: 'data_submission.league_great_won', labelText: 'Great League Won', badge: Badge.LEAGUE_GREAT_WON },
+  { field: 'league_ultra_won', labelId: 'data_submission.league_ultra_won', labelText: 'Ultra League Won', badge: Badge.LEAGUE_ULTRA_WON },
+  { field: 'league_master_won', labelId: 'data_submission.league_master_won', labelText: 'Master League Won', badge: Badge.LEAGUE_MASTER_WON },
+  { field: 'photobombs', labelId: 'data_submission.photobombs', labelText: 'Photobombs', badge: Badge.PHOTOBOMBS },
+  { field: 'dex_gen5', labelId: 'data_submission.dex_gen5', labelText: 'Gen 5', badge: Badge.DEX_GEN_5 },
+  { field: 'purified', labelId: 'data_submission.purified', labelText: 'Purified', badge: Badge.PURIFIED },
+  { field: 'grunts_defeated', labelId: 'data_submission.grunts_defeated', labelText: 'Grunts Defeated', badge: Badge.GRUNTS_DEFEATED },
+  { field: 'giovanni_defeated', labelId: 'data_submission.giovanni_defeated', labelText: 'Giovanni Defeated', badge: Badge.GIOVANNI_DEFEATED },
+  { field: 'best_buddies', labelId: 'data_submission.best_buddies', labelText: 'Best Buddies', badge: Badge.BEST_BUDDIES },
+  { field: 'dex_gen6', labelId: 'data_submission.dex_gen6', labelText: 'Gen 6', badge: Badge.DEX_GEN_6 },
+  { field: 'dex_gen7', labelId: 'data_submission.dex_gen7', labelText: 'Gen 7', badge: Badge.DEX_GEN_7 },
+  { field: 'dex_gen8', labelId: 'data_submission.dex_gen8', labelText: 'Gen 8', badge: Badge.DEX_GEN_8 },
+  { field: 'seven_day_streaks', labelId: 'data_submission.seven_day_streaks', labelText: 'Seven Day Streaks', badge: Badge.SEVEN_DAY_STREAKS },
+  { field: 'unique_raid_bosses', labelId: 'data_submission.unique_raid_bosses', labelText: 'Unique Raid Bosses', badge: Badge.UNIQUE_RAID_BOSSES },
+  { field: 'raids_with_friends', labelId: 'data_submission.raids_with_friends', labelText: 'Raids With Friends', badge: Badge.RAIDS_WITH_FRIENDS },
+  { field: 'caught_at_lure', labelId: 'data_submission.caught_at_lure', labelText: 'Caught At Lure', badge: Badge.CAUGHT_AT_LURE },
+  { field: 'mega_evos', labelId: 'data_submission.mega_evos', labelText: 'Mega Evolutions', badge: Badge.MEGA_EVOS },
+  { field: 'unique_mega_evos', labelId: 'data_submission.unique_mega_evos', labelText: 'Unique Mega Evolutions', badge: Badge.UNIQUE_MEGA_EVOS },
+  { field: 'trainers_referred', labelId: 'data_submission.trainers_referred', labelText: 'Trainers Referred', badge: Badge.TRAINERS_REFERRED },
+  { field: 'raid_achievements', labelId: 'data_submission.raid_achievements', labelText: 'Raid Achievements', badge: Badge.RAID_ACHIEVEMENTS },
+  { field: 'total_route_play', labelId: 'data_submission.total_route_play', labelText: 'Total Route Play', badge: Badge.TOTAL_ROUTE_PLAY },
+  { field: 'dex_gen8a', labelId: 'data_submission.dex_gen8a', labelText: 'Hisui', badge: Badge.DEX_GEN_8A },
+  { field: 'tiny_pokemon_caught', labelId: 'data_submission.tiny_pokemon_caught', labelText: 'Tiny Pokémon Caught', badge: Badge.TINY_POKEMON_CAUGHT },
+  { field: 'jumbo_pokemon_caught', labelId: 'data_submission.jumbo_pokemon_caught', labelText: 'Jumbo Pokémon Caught', badge: Badge.JUMBO_POKEMON_CAUGHT },
+  { field: 'dex_gen9', labelId: 'data_submission.dex_gen9', labelText: 'Gen 9', badge: Badge.DEX_GEN_9 },
+  { field: 'parties_completed', labelId: 'data_submission.parties_completed', labelText: 'Parties Completed', badge: Badge.PARTIES_COMPLETED },
+  { field: 'event_check_ins', labelId: 'data_submission.event_check_ins', labelText: 'Event Check-ins', badge: Badge.EVENT_CHECK_INS },
+  { field: 'vivillon', labelId: 'data_submission.vivillon', labelText: 'Vivillon', badge: Badge.VIVILLON },
+  { field: 'showcase_max_size_first_place', labelId: 'data_submission.showcase_max_size_first_place', labelText: 'Showcase Max Size 1st Place', badge: Badge.SHOWCASE_MAX_SIZE_FIRST_PLACE },
+  { field: 'caught_normal', labelId: 'data_submission.caught_normal', labelText: 'Caught Normal', badge: Badge.CAUGHT_NORMAL },
+  { field: 'caught_fighting', labelId: 'data_submission.caught_fighting', labelText: 'Caught Fighting', badge: Badge.CAUGHT_FIGHTING },
+  { field: 'caught_flying', labelId: 'data_submission.caught_flying', labelText: 'Caught Flying', badge: Badge.CAUGHT_FLYING },
+  { field: 'caught_poison', labelId: 'data_submission.caught_poison', labelText: 'Caught Poison', badge: Badge.CAUGHT_POISON },
+  { field: 'caught_ground', labelId: 'data_submission.caught_ground', labelText: 'Caught Ground', badge: Badge.CAUGHT_GROUND },
+  { field: 'caught_rock', labelId: 'data_submission.caught_rock', labelText: 'Caught Rock', badge: Badge.CAUGHT_ROCK },
+  { field: 'caught_bug', labelId: 'data_submission.caught_bug', labelText: 'Caught Bug', badge: Badge.CAUGHT_BUG },
+  { field: 'caught_ghost', labelId: 'data_submission.caught_ghost', labelText: 'Caught Ghost', badge: Badge.CAUGHT_GHOST },
+  { field: 'caught_steel', labelId: 'data_submission.caught_steel', labelText: 'Caught Steel', badge: Badge.CAUGHT_STEEL },
+  { field: 'caught_fire', labelId: 'data_submission.caught_fire', labelText: 'Caught Fire', badge: Badge.CAUGHT_FIRE },
+  { field: 'caught_water', labelId: 'data_submission.caught_water', labelText: 'Caught Water', badge: Badge.CAUGHT_WATER },
+  { field: 'caught_grass', labelId: 'data_submission.caught_grass', labelText: 'Caught Grass', badge: Badge.CAUGHT_GRASS },
+  { field: 'caught_electric', labelId: 'data_submission.caught_electric', labelText: 'Caught Electric', badge: Badge.CAUGHT_ELECTRIC },
+  { field: 'caught_psychic', labelId: 'data_submission.caught_psychic', labelText: 'Caught Psychic', badge: Badge.CAUGHT_PSYCHIC },
+  { field: 'caught_ice', labelId: 'data_submission.caught_ice', labelText: 'Caught Ice', badge: Badge.CAUGHT_ICE },
+  { field: 'caught_dragon', labelId: 'data_submission.caught_dragon', labelText: 'Caught Dragon', badge: Badge.CAUGHT_DRAGON },
+  { field: 'caught_dark', labelId: 'data_submission.caught_dark', labelText: 'Caught Dark', badge: Badge.CAUGHT_DARK },
+  { field: 'caught_fairy', labelId: 'data_submission.caught_fairy', labelText: 'Caught Fairy', badge: Badge.CAUGHT_FAIRY },
+];
 
 const DataSubmissionPage: NextPage = () => {
   const intl = useIntl();
@@ -127,23 +210,31 @@ const DataSubmissionPage: NextPage = () => {
     }
   };
 
-  const renderField = (field: string, labelId: string, labelText: string, type: 'text' | 'number' = 'number') => (
-    <div className="mb-2">
-      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-        {intl.formatMessage({ id: labelId, defaultMessage: labelText, description: `Label for ${field}` })}
-        <input
-          type={type}
-          className="mt-1 block w-full rounded border border-gray-300 bg-white px-2 py-1 text-sm dark:border-gray-600 dark:bg-gray-800"
-          value={(formData[field] ?? '') as string}
-          onChange={(e) => {
-            const value =
-              type === 'number' ? (e.target.value ? parseFloat(e.target.value) : null) : e.target.value || null;
-            handleChange(field, value);
-          }}
-        />
-      </label>
-    </div>
-  );
+  const renderField = (config: FormField) => {
+    const { field, labelId, labelText, badge, type } = config;
+    const inputType = type ?? 'number';
+
+    return (
+      <div className="mb-3 flex items-center gap-2">
+        {badge && <BadgeIcon badge={badge} value={(formData[field] as number) ?? 0} />}
+        <label className="flex-1">
+          <span className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            {intl.formatMessage({ id: labelId, defaultMessage: labelText, description: `Label for ${field}` })}
+          </span>
+          <input
+            type={inputType}
+            className="mt-1 block w-full rounded border border-gray-300 bg-white px-2 py-1 text-sm dark:border-gray-600 dark:bg-gray-800"
+            value={(formData[field] ?? '') as string}
+            onChange={(e) => {
+              const value =
+                inputType === 'number' ? (e.target.value ? parseFloat(e.target.value) : null) : e.target.value || null;
+              handleChange(field, value);
+            }}
+          />
+        </label>
+      </div>
+    );
+  };
 
   if (status === 'loading' || isLoading) {
     return (
@@ -219,299 +310,9 @@ const DataSubmissionPage: NextPage = () => {
       {errorMessage && <div className="my-3 rounded bg-red text-black p-2">{errorMessage}</div>}
 
       <form onSubmit={handleSubmit} noValidate autoComplete="off" className="space-y-6">
-        {/* General Info */}
-        <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
-          <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage
-              id="data_submission.general_info"
-              defaultMessage="General Info"
-              description="Section header for general info"
-            />
-          </legend>
-          <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
-            {renderField('friendship_id', 'data_submission.friendship_id', 'Friendship ID', 'text')}
-            {renderField('friend_code', 'data_submission.friend_code', 'Friend Code', 'text')}
-            {renderField('team', 'data_submission.team', 'Team')}
-            {renderField('level', 'data_submission.level', 'Level')}
-            {renderField('xp', 'data_submission.xp', 'XP')}
-          </div>
-        </fieldset>
-
-        {/* Walking & Catching */}
-        <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
-          <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage
-              id="data_submission.walking_catching"
-              defaultMessage="Walking & Catching"
-              description="Section header for walking and catching stats"
-            />
-          </legend>
-          <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
-            {renderField('km_walked', 'data_submission.km_walked', 'Km Walked')}
-            {renderField('caught_pokemon', 'data_submission.caught_pokemon', 'Caught Pokémon')}
-          </div>
-        </fieldset>
-
-        {/* Battles & Gym */}
-        <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
-          <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage
-              id="data_submission.battles_gym"
-              defaultMessage="Battles & Gym"
-              description="Section header for battles and gym stats"
-            />
-          </legend>
-          <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
-            {renderField('battles_won', 'data_submission.battles_won', 'Battles Won')}
-            {renderField('gym_battles_won', 'data_submission.gym_battles_won', 'Gym Battles Won')}
-            {renderField('grunts_defeated', 'data_submission.grunts_defeated', 'Grunts Defeated')}
-          </div>
-        </fieldset>
-
-        {/* Raids */}
-        <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
-          <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage
-              id="data_submission.raids"
-              defaultMessage="Raids"
-              description="Section header for raid stats"
-            />
-          </legend>
-          <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
-            {renderField('normal_raids_won', 'data_submission.normal_raids_won', 'Normal Raids Won')}
-            {renderField('legendary_raids_won', 'data_submission.legendary_raids_won', 'Legendary Raids Won')}
-            {renderField('trainings_won', 'data_submission.trainings_won', 'Trainings Won')}
-            {renderField('raids_with_friends', 'data_submission.raids_with_friends', 'Raids With Friends')}
-            {renderField('raid_achievements', 'data_submission.raid_achievements', 'Raid Achievements')}
-            {renderField('unique_raid_bosses', 'data_submission.unique_raid_bosses', 'Unique Raid Bosses')}
-          </div>
-        </fieldset>
-
-        {/* Evolution & Hatching */}
-        <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
-          <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage
-              id="data_submission.evolution_hatching"
-              defaultMessage="Evolution & Hatching"
-              description="Section header for evolution and hatching stats"
-            />
-          </legend>
-          <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
-            {renderField('evolved', 'data_submission.evolved', 'Evolved')}
-            {renderField('hatched', 'data_submission.hatched', 'Hatched')}
-            {renderField('mega_evos', 'data_submission.mega_evos', 'Mega Evolutions')}
-            {renderField('unique_mega_evos', 'data_submission.unique_mega_evos', 'Unique Mega Evolutions')}
-          </div>
-        </fieldset>
-
-        {/* Social */}
-        <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
-          <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage
-              id="data_submission.social"
-              defaultMessage="Social"
-              description="Section header for social stats"
-            />
-          </legend>
-          <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
-            {renderField('trades', 'data_submission.trades', 'Trades')}
-            {renderField('photobombs', 'data_submission.photobombs', 'Photobombs')}
-            {renderField('purified', 'data_submission.purified', 'Purified')}
-            {renderField('best_friends', 'data_submission.best_friends', 'Best Friends')}
-            {renderField('best_buddies', 'data_submission.best_buddies', 'Best Buddies')}
-            {renderField('trainers_referred', 'data_submission.trainers_referred', 'Trainers Referred')}
-          </div>
-        </fieldset>
-
-        {/* League (PvP) */}
-        <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
-          <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage
-              id="data_submission.league_pvp"
-              defaultMessage="League (PvP)"
-              description="Section header for league PvP stats"
-            />
-          </legend>
-          <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
-            {renderField('gbl_rank', 'data_submission.gbl_rank', 'GBL Rank')}
-            {renderField('gbl_rating', 'data_submission.gbl_rating', 'GBL Rating')}
-            {renderField('league_great_won', 'data_submission.league_great_won', 'Great League Won')}
-            {renderField('league_ultra_won', 'data_submission.league_ultra_won', 'Ultra League Won')}
-            {renderField('league_master_won', 'data_submission.league_master_won', 'Master League Won')}
-          </div>
-        </fieldset>
-
-        {/* Stops & Quests */}
-        <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
-          <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage
-              id="data_submission.stops_quests"
-              defaultMessage="Stops & Quests"
-              description="Section header for stops and quests stats"
-            />
-          </legend>
-          <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
-            {renderField('stops_spun', 'data_submission.stops_spun', 'Stops Spun')}
-            {renderField('unique_stops_spun', 'data_submission.unique_stops_spun', 'Unique Stops Spun')}
-            {renderField('quests', 'data_submission.quests', 'Quests Completed')}
-            {renderField('berries_fed', 'data_submission.berries_fed', 'Berries Fed')}
-            {renderField('hours_defended', 'data_submission.hours_defended', 'Hours Defended')}
-          </div>
-        </fieldset>
-
-        {/* Special Pokémon */}
-        <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
-          <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage
-              id="data_submission.special_pokemon"
-              defaultMessage="Special Pokémon"
-              description="Section header for special pokemon stats"
-            />
-          </legend>
-          <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
-            {renderField('vivillon', 'data_submission.vivillon', 'Vivillon')}
-            {renderField('pikachu_caught', 'data_submission.pikachu_caught', 'Pikachu Caught')}
-            {renderField('tiny_pokemon_caught', 'data_submission.tiny_pokemon_caught', 'Tiny Pokémon Caught')}
-            {renderField('jumbo_pokemon_caught', 'data_submission.jumbo_pokemon_caught', 'Jumbo Pokémon Caught')}
-            {renderField('xl_karps', 'data_submission.xl_karps', 'XL Karps')}
-            {renderField('xs_rats', 'data_submission.xs_rats', 'XS Rats')}
-          </div>
-        </fieldset>
-
-        {/* Giovanni & Collections */}
-        <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
-          <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage
-              id="data_submission.giovanni_collections"
-              defaultMessage="Giovanni & Collections"
-              description="Section header for Giovanni and collections stats"
-            />
-          </legend>
-          <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
-            {renderField('giovanni_defeated', 'data_submission.giovanni_defeated', 'Giovanni Defeated')}
-            {renderField('collections_done', 'data_submission.collections_done', 'Collections Done')}
-          </div>
-        </fieldset>
-
-        {/* Events & Activities */}
-        <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
-          <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage
-              id="data_submission.events_activities"
-              defaultMessage="Events & Activities"
-              description="Section header for events and activities stats"
-            />
-          </legend>
-          <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
-            {renderField('event_badges', 'data_submission.event_badges', 'Event Badges', 'text')}
-            {renderField(
-              'showcase_max_size_first_place',
-              'data_submission.showcase_max_size_first_place',
-              'Showcase Max Size 1st Place',
-            )}
-            {renderField('total_route_play', 'data_submission.total_route_play', 'Total Route Play')}
-            {renderField('parties_completed', 'data_submission.parties_completed', 'Parties Completed')}
-            {renderField('event_check_ins', 'data_submission.event_check_ins', 'Event Check-ins')}
-          </div>
-        </fieldset>
-
-        {/* Streaks & Lures */}
-        <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
-          <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage
-              id="data_submission.streaks_lures"
-              defaultMessage="Streaks & Lures"
-              description="Section header for streaks and lures stats"
-            />
-          </legend>
-          <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
-            {renderField('seven_day_streaks', 'data_submission.seven_day_streaks', 'Seven Day Streaks')}
-            {renderField('caught_at_lure', 'data_submission.caught_at_lure', 'Caught At Lure')}
-          </div>
-        </fieldset>
-
-        {/* Wayfarer & Trade */}
-        <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
-          <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage
-              id="data_submission.wayfarer_trade"
-              defaultMessage="Wayfarer & Trade"
-              description="Section header for Wayfarer and trade stats"
-            />
-          </legend>
-          <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
-            {renderField('wayfarer_agreements', 'data_submission.wayfarer_agreements', 'Wayfarer Agreements')}
-            {renderField('trade_km', 'data_submission.trade_km', 'Trade Km')}
-          </div>
-        </fieldset>
-
-        {/* Unique Unown */}
-        <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
-          <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage
-              id="data_submission.unique_unown_section"
-              defaultMessage="Unique Unown"
-              description="Section header for unique unown stat"
-            />
-          </legend>
-          <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
-            {renderField('unique_unown', 'data_submission.unique_unown', 'Unique Unown')}
-          </div>
-        </fieldset>
-
-        {/* Pokédex */}
-        <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
-          <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage
-              id="data_submission.pokedex"
-              defaultMessage="Pokédex"
-              description="Section header for Pokedex stats"
-            />
-          </legend>
-          <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-4">
-            {renderField('dex_gen1', 'data_submission.dex_gen1', 'Gen 1')}
-            {renderField('dex_gen2', 'data_submission.dex_gen2', 'Gen 2')}
-            {renderField('dex_gen3', 'data_submission.dex_gen3', 'Gen 3')}
-            {renderField('dex_gen4', 'data_submission.dex_gen4', 'Gen 4')}
-            {renderField('dex_gen5', 'data_submission.dex_gen5', 'Gen 5')}
-            {renderField('dex_gen6', 'data_submission.dex_gen6', 'Gen 6')}
-            {renderField('dex_gen7', 'data_submission.dex_gen7', 'Gen 7')}
-            {renderField('dex_gen8', 'data_submission.dex_gen8', 'Gen 8')}
-            {renderField('dex_gen8a', 'data_submission.dex_gen8a', 'Hisui')}
-            {renderField('dex_gen9', 'data_submission.dex_gen9', 'Gen 9')}
-          </div>
-        </fieldset>
-
-        {/* Type-specific Catches */}
-        <fieldset className="rounded border border-gray-300 p-4 dark:border-gray-600">
-          <legend className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            <FormattedMessage
-              id="data_submission.type_specific_catches"
-              defaultMessage="Type-specific Catches"
-              description="Section header for type-specific catch stats"
-            />
-          </legend>
-          <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-4">
-            {renderField('caught_normal', 'data_submission.caught_normal', 'Caught Normal')}
-            {renderField('caught_fighting', 'data_submission.caught_fighting', 'Caught Fighting')}
-            {renderField('caught_flying', 'data_submission.caught_flying', 'Caught Flying')}
-            {renderField('caught_poison', 'data_submission.caught_poison', 'Caught Poison')}
-            {renderField('caught_ground', 'data_submission.caught_ground', 'Caught Ground')}
-            {renderField('caught_rock', 'data_submission.caught_rock', 'Caught Rock')}
-            {renderField('caught_bug', 'data_submission.caught_bug', 'Caught Bug')}
-            {renderField('caught_ghost', 'data_submission.caught_ghost', 'Caught Ghost')}
-            {renderField('caught_steel', 'data_submission.caught_steel', 'Caught Steel')}
-            {renderField('caught_fire', 'data_submission.caught_fire', 'Caught Fire')}
-            {renderField('caught_water', 'data_submission.caught_water', 'Caught Water')}
-            {renderField('caught_grass', 'data_submission.caught_grass', 'Caught Grass')}
-            {renderField('caught_electric', 'data_submission.caught_electric', 'Caught Electric')}
-            {renderField('caught_psychic', 'data_submission.caught_psychic', 'Caught Psychic')}
-            {renderField('caught_ice', 'data_submission.caught_ice', 'Caught Ice')}
-            {renderField('caught_dragon', 'data_submission.caught_dragon', 'Caught Dragon')}
-            {renderField('caught_dark', 'data_submission.caught_dark', 'Caught Dark')}
-            {renderField('caught_fairy', 'data_submission.caught_fairy', 'Caught Fairy')}
-          </div>
-        </fieldset>
+        <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
+          {FORM_FIELDS.map((config) => renderField(config))}
+        </div>
 
         <Button type="submit" disabled={isSubmitting} className="px-3">
           <FormattedMessage

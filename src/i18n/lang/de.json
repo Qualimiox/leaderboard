@@ -792,7 +792,7 @@
     "description": "Label for level field"
   },
   "data_submission.xp": {
-    "defaultMessage": "XP",
+    "defaultMessage": "EXP",
     "description": "Label for xp field"
   },
   "data_submission.km_walked": {
@@ -944,7 +944,7 @@
     "description": "Label for xs_rats field"
   },
   "data_submission.giovanni_defeated": {
-    "defaultMessage": "Besiegter Giovanni",
+    "defaultMessage": "Ultraheld",
     "description": "Label for giovanni_defeated field"
   },
   "data_submission.collections_done": {

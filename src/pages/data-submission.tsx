@@ -16,20 +16,22 @@ const DataSubmissionPage: NextPage = () => {
   const intl = useIntl();
   const { data: session, status } = useSession();
   const trainerName = session?.trainerName ?? '';
+  const discordId = session?.discordId ?? '';
 
   const [formData, setFormData] = useState<TrainerData>({});
+  const [resolvedTrainerName, setResolvedTrainerName] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
   // Fetch existing trainer data to pre-fill the form
-  const fetchTrainerData = useCallback(async () => {
-    if (!trainerName) return;
+  const fetchTrainerData = useCallback(async (name: string) => {
+    if (!name) return;
 
     try {
       const response: TrainerData | { code: number; message: string } = await fetcher(
-        `/api/trainers/${encodeURIComponent(trainerName)}`,
+        `/api/trainers/${encodeURIComponent(name)}`,
       );
 
       if ('code' in response) {
@@ -43,20 +45,41 @@ const DataSubmissionPage: NextPage = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [trainerName]);
+  }, []);
 
   useEffect(() => {
-    if (status === 'authenticated' && trainerName) {
-      fetchTrainerData();
+    if (status === 'authenticated') {
+      // If trainerName is in session, fetch data directly
+      if (trainerName) {
+        fetchTrainerData(trainerName);
+      } else if (discordId) {
+        // Otherwise look up trainer by Discord ID from player table
+        fetcher(`/api/trainers/by-discord-id/${encodeURIComponent(discordId)}`)
+          .then((response: string | { code: number; message: string }) => {
+            if ('code' in response) {
+              // Not registered yet — show empty form with editable trainer name
+              setFormData({});
+              setIsLoading(false);
+            } else {
+              const foundTrainerName = response as string;
+              setResolvedTrainerName(foundTrainerName);
+              fetchTrainerData(foundTrainerName);
+            }
+          })
+          .catch(() => {
+            setFormData({});
+            setIsLoading(false);
+          });
+      } else {
+        // No Discord ID — show empty form
+        setFormData({});
+        setIsLoading(false);
+      }
     } else if (status === 'unauthenticated') {
       setFormData({});
       setIsLoading(false);
-    } else if (status === 'authenticated') {
-      // Authenticated but no trainer name yet — show empty form
-      setFormData({});
-      setIsLoading(false);
     }
-  }, [status, trainerName, fetchTrainerData]);
+  }, [status, trainerName, discordId, fetchTrainerData]);
 
   const handleChange = (field: string, value: string | number | null) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -72,7 +95,7 @@ const DataSubmissionPage: NextPage = () => {
       const response = await fetcher<{ success: boolean; message?: string }>('/api/trainers/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: trainerName || formData.name, ...formData }),
+        body: JSON.stringify({ name: trainerName || resolvedTrainerName || formData.name, ...formData }),
       });
 
       if (response.success) {
@@ -160,14 +183,14 @@ const DataSubmissionPage: NextPage = () => {
 
       <h1 className="title-1 mt-2.5 lg:mt-0.5">{title}</h1>
 
-      {trainerName ? (
+      {trainerName || resolvedTrainerName ? (
         <p className="text-lg text-gray-700 dark:text-gray-300">
           <FormattedMessage
             id="data_submission.trainer_label"
             defaultMessage="Submitting data for trainer:"
             description="Label showing which trainer the data is being submitted for"
           />{' '}
-          <strong>{trainerName}</strong>
+          <strong>{trainerName || resolvedTrainerName}</strong>
         </p>
       ) : (
         <div className="mb-4">

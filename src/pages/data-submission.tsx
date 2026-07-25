@@ -54,8 +54,12 @@ const DataSubmissionPage: NextPage = () => {
         fetchTrainerData(trainerName);
       } else if (discordId) {
         // Otherwise look up trainer by Discord ID from player table
-        fetcher(`/api/trainers/by-discord-id/${encodeURIComponent(discordId)}`)
-          .then((response: string | { code: number; message: string }) => {
+        const lookupByDiscord = async () => {
+          try {
+            const response: string | { code: number; message: string } = await fetcher(
+              `/api/trainers/by-discord-id/${encodeURIComponent(discordId)}`,
+            );
+
             if ('code' in response) {
               // Not registered yet — show empty form with editable trainer name
               setFormData({});
@@ -65,11 +69,13 @@ const DataSubmissionPage: NextPage = () => {
               setResolvedTrainerName(foundTrainerName);
               fetchTrainerData(foundTrainerName);
             }
-          })
-          .catch(() => {
+          } catch {
             setFormData({});
             setIsLoading(false);
-          });
+          }
+        };
+
+        lookupByDiscord();
       } else {
         // No Discord ID — show empty form
         setFormData({});

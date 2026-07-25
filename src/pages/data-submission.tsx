@@ -72,7 +72,7 @@ const DataSubmissionPage: NextPage = () => {
       const response = await fetcher<{ success: boolean; message?: string }>('/api/trainers/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: trainerName, ...formData }),
+        body: JSON.stringify({ name: trainerName || formData.name, ...formData }),
       });
 
       if (response.success) {
@@ -137,17 +137,7 @@ const DataSubmissionPage: NextPage = () => {
     );
   }
 
-  if (status === 'authenticated' && !trainerName) {
-    return (
-      <div className="py-10 text-center">
-        <FormattedMessage
-          id="data_submission.not_registered"
-          defaultMessage="Please register a trainer name before submitting data."
-          description="Message for logged-in user without registered trainer name"
-        />
-      </div>
-    );
-  }
+
 
   const title = intl.formatMessage({
     id: 'data_submission.title',
@@ -172,14 +162,32 @@ const DataSubmissionPage: NextPage = () => {
 
       <h1 className="title-1 mt-2.5 lg:mt-0.5">{title}</h1>
 
-      <p className="text-lg text-gray-700 dark:text-gray-300">
-        <FormattedMessage
-          id="data_submission.trainer_label"
-          defaultMessage="Submitting data for trainer:"
-          description="Label showing which trainer the data is being submitted for"
-        />{' '}
-        <strong>{trainerName}</strong>
-      </p>
+      {trainerName ? (
+        <p className="text-lg text-gray-700 dark:text-gray-300">
+          <FormattedMessage
+            id="data_submission.trainer_label"
+            defaultMessage="Submitting data for trainer:"
+            description="Label showing which trainer the data is being submitted for"
+          />{' '}
+          <strong>{trainerName}</strong>
+        </p>
+      ) : (
+        <div className="mb-4">
+          <label className="block text-lg font-medium text-gray-700 dark:text-gray-300">
+            <FormattedMessage
+              id="data_submission.trainer_name"
+              defaultMessage="Trainer Name"
+              description="Label for trainer name input field"
+            />
+            <input
+              type="text"
+              className="mt-1 block w-full rounded border border-gray-300 bg-white px-2 py-1 text-sm dark:border-gray-600 dark:bg-gray-800"
+              value={(formData.name ?? '') as string}
+              onChange={(e) => handleChange('name', e.target.value)}
+            />
+          </label>
+        </div>
+      )}
 
       {submitMessage && <div className="my-3 rounded bg-green text-black p-2">{submitMessage}</div>}
       {errorMessage && <div className="my-3 rounded bg-red text-black p-2">{errorMessage}</div>}

@@ -4,6 +4,7 @@ import { config } from 'node-config-ts';
 
 import { pool } from '@/database';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
+import { getTrainerByName, setUserTrainerName } from '@/features/auth/api';
 import { resolveConfig } from '@/utils/resolveConfig';
 
 interface ApiResponse {
@@ -124,12 +125,32 @@ export default async (request: NextApiRequest, response: NextApiResponse<ApiResp
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     const trainerName = (session as unknown as Record<string, unknown>).trainerName as string | undefined;
-    if (!trainerName) {
-      response.status(400).json({ success: false, message: 'Trainer name not found in session' });
-      return;
-    }
 
-    name = trainerName;
+    if (!trainerName) {
+      // Not yet registered — accept name from the body and register the user first
+      if (!formData.name || typeof formData.name !== 'string') {
+        response.status(400).json({ success: false, message: 'Trainer name is required' });
+        return;
+      }
+
+      const existingTrainer = await getTrainerByName(formData.name);
+      if (!existingTrainer || typeof existingTrainer.name !== 'string') {
+        response.status(404).json({ success: false, message: 'Trainer not found in database' });
+        return;
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      const userId = (session as unknown as Record<string, unknown>).userId as string | undefined;
+      if (!userId || typeof userId !== 'string') {
+        response.status(400).json({ success: false, message: 'User ID not found in session' });
+        return;
+      }
+
+      await setUserTrainerName(userId, existingTrainer.name);
+      name = existingTrainer.name;
+    } else {
+      name = trainerName;
+    }
   }
 
   // Build the SQL query with parameterized values

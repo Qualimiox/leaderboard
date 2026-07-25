@@ -125,13 +125,25 @@ const DataSubmissionPage: NextPage = () => {
     );
   }
 
-  if (!trainerName) {
+  if (status === 'unauthenticated') {
     return (
       <div className="py-10 text-center">
         <FormattedMessage
           id="data_submission.login_required"
           defaultMessage="Please log in to submit data."
           description="Login required message"
+        />
+      </div>
+    );
+  }
+
+  if (status === 'authenticated' && !trainerName) {
+    return (
+      <div className="py-10 text-center">
+        <FormattedMessage
+          id="data_submission.not_registered"
+          defaultMessage="Please register a trainer name before submitting data."
+          description="Message for logged-in user without registered trainer name"
         />
       </div>
     );

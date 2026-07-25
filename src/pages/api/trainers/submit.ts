@@ -156,7 +156,12 @@ export default async (request: NextApiRequest, response: NextApiResponse<ApiResp
               : typeof value === 'number'
                 ? (value as number)
                 : null;
-        values.push(Number.isNaN(numValue) ? null : numValue);
+
+        if (Number.isNaN(numValue)) {
+          values.push(null);
+        } else {
+          values.push(numValue);
+        }
       }
     }
   }

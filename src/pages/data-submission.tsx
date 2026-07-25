@@ -102,12 +102,15 @@ const DataSubmissionPage: NextPage = () => {
           type={type}
           className="mt-1 block w-full rounded border border-gray-300 bg-white px-2 py-1 text-sm dark:border-gray-600 dark:bg-gray-800"
           value={(formData[field] ?? '') as string}
-          onChange={(e) =>
-            handleChange(
-              field,
-              type === 'number' ? (e.target.value ? parseFloat(e.target.value) : null) : e.target.value || null,
-            )
-          }
+          onChange={(e) => {
+            const value =
+              type === 'number'
+                ? e.target.value
+                  ? parseFloat(e.target.value)
+                  : null
+                : e.target.value || null;
+            handleChange(field, value);
+          }}
         />
       </label>
     </div>
@@ -166,8 +169,12 @@ const DataSubmissionPage: NextPage = () => {
         <strong>{trainerName}</strong>
       </p>
 
-      {submitMessage && <div className="my-3 rounded bg-green text-black p-2">{submitMessage}</div>
-      {errorMessage && <div className="my-3 rounded bg-red text-black p-2">{errorMessage}</div>}
+      {submitMessage && (
+        <div className="my-3 rounded bg-green text-black p-2">{submitMessage}</div>
+      )}
+      {errorMessage && (
+        <div className="my-3 rounded bg-red text-black p-2">{errorMessage}</div>
+      )}
 
       <form onSubmit={handleSubmit} noValidate autoComplete="off" className="space-y-6">
         {/* General Info */}

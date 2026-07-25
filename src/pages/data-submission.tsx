@@ -60,14 +60,13 @@ const DataSubmissionPage: NextPage = () => {
               `/api/trainers/by-discord-id/${encodeURIComponent(discordId)}`,
             );
 
-            if ('code' in response) {
+            if (typeof response === 'string') {
+              setResolvedTrainerName(response);
+              fetchTrainerData(response);
+            } else {
               // Not registered yet — show empty form with editable trainer name
               setFormData({});
               setIsLoading(false);
-            } else {
-              const foundTrainerName = response as string;
-              setResolvedTrainerName(foundTrainerName);
-              fetchTrainerData(foundTrainerName);
             }
           } catch {
             setFormData({});

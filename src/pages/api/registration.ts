@@ -35,14 +35,14 @@ export default async (request: NextApiRequest, response: NextApiResponse<Respons
   }
 
   const session = await getSession({ req: request });
-  if (!session?.userId || typeof session?.userId !== 'string') {
+  if (!session?.discordId || typeof session.discordId !== 'string') {
     response.status(400).json({ error: 'invalid_request' });
     response.end();
 
     return;
   }
 
-  await setUserTrainerName(session.userId, trainer.name);
+  await setUserTrainerName(session.discordId, trainer.name);
   session.trainerName = trainer.name;
 
   response.status(200).json({ message: 'gg' });

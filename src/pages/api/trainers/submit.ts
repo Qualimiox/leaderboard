@@ -134,13 +134,13 @@ export default async (request: NextApiRequest, response: NextApiResponse<ApiResp
       }
 
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      const userId = (session as unknown as Record<string, unknown>).userId as string | undefined;
-      if (!userId || typeof userId !== 'string') {
-        response.status(400).json({ success: false, message: 'User ID not found in session' });
+      const discordId = (session as unknown as Record<string, unknown>).discordId as string | undefined;
+      if (!discordId || typeof discordId !== 'string') {
+        response.status(400).json({ success: false, message: 'Discord ID not found in session' });
         return;
       }
 
-      await setUserTrainerName(userId, formData.name);
+      await setUserTrainerName(discordId, formData.name);
       name = formData.name;
     } else {
       name = trainerName;

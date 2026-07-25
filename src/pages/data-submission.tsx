@@ -137,8 +137,6 @@ const DataSubmissionPage: NextPage = () => {
     );
   }
 
-
-
   const title = intl.formatMessage({
     id: 'data_submission.title',
     defaultMessage: 'Data Submission',

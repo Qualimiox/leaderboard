@@ -104,11 +104,7 @@ const DataSubmissionPage: NextPage = () => {
           value={(formData[field] ?? '') as string}
           onChange={(e) => {
             const value =
-              type === 'number'
-                ? e.target.value
-                  ? parseFloat(e.target.value)
-                  : null
-                : e.target.value || null;
+              type === 'number' ? (e.target.value ? parseFloat(e.target.value) : null) : e.target.value || null;
             handleChange(field, value);
           }}
         />
@@ -164,17 +160,12 @@ const DataSubmissionPage: NextPage = () => {
           id="data_submission.trainer_label"
           defaultMessage="Submitting data for trainer:"
           description="Label showing which trainer the data is being submitted for"
-        />
-        {' '}
+        />{' '}
         <strong>{trainerName}</strong>
       </p>
 
-      {submitMessage && (
-        <div className="my-3 rounded bg-green text-black p-2">{submitMessage}</div>
-      )}
-      {errorMessage && (
-        <div className="my-3 rounded bg-red text-black p-2">{errorMessage}</div>
-      )}
+      {submitMessage && <div className="my-3 rounded bg-green text-black p-2">{submitMessage}</div>}
+      {errorMessage && <div className="my-3 rounded bg-red text-black p-2">{errorMessage}</div>}
 
       <form onSubmit={handleSubmit} noValidate autoComplete="off" className="space-y-6">
         {/* General Info */}

@@ -152,10 +152,10 @@ export default async (request: NextApiRequest, response: NextApiResponse<ApiResp
           column === 'km_walked' || column === 'trade_km'
             ? parseFloat(String(value))
             : typeof value === 'string'
-              ? parseInt(value, 10)
-              : typeof value === 'number'
-                ? (value as number)
-                : null;
+            ? parseInt(value, 10)
+            : typeof value === 'number'
+            ? (value as number)
+            : null;
 
         if (Number.isNaN(numValue)) {
           values.push(null);

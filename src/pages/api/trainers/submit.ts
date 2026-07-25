@@ -148,7 +148,7 @@ export default async (request: NextApiRequest, response: NextApiResponse<ApiResp
       if (STRING_COLUMNS.has(column)) {
         values.push(typeof value === 'string' ? value.trim() : '');
       } else {
-        let numValue: number | null =
+        const numValue: number | null =
           column === 'km_walked' || column === 'trade_km'
             ? parseFloat(String(value))
             : typeof value === 'string'

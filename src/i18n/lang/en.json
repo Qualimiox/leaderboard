@@ -1175,6 +1175,10 @@
     "defaultMessage": "Please log in to submit data.",
     "description": "Login required message"
   },
+  "data_submission.trainer_label": {
+    "defaultMessage": "Submitting data for trainer:",
+    "description": "Label showing which trainer the data is being submitted for"
+  },
   "data_submission.submit_button": {
     "defaultMessage": "Submit Data",
     "description": "Submit button for data submission form"

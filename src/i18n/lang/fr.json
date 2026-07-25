@@ -1099,6 +1099,10 @@
     "defaultMessage": "Veuillez vous connecter pour soumettre des données.",
     "description": "Login required message"
   },
+  "data_submission.trainer_label": {
+    "defaultMessage": "Soumission de données pour l'entraîneur :",
+    "description": "Label showing which trainer the data is being submitted for"
+  },
   "data_submission.submit_button": {
     "defaultMessage": "Soumettre les données",
     "description": "Submit button for data submission form"

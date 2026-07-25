@@ -156,7 +156,17 @@ const DataSubmissionPage: NextPage = () => {
 
       <h1 className="title-1 mt-2.5 lg:mt-0.5">{title}</h1>
 
-      {submitMessage && <div className="my-3 rounded bg-green text-black p-2">{submitMessage}</div>}
+      <p className="text-lg text-gray-700 dark:text-gray-300">
+        <FormattedMessage
+          id="data_submission.trainer_label"
+          defaultMessage="Submitting data for trainer:"
+          description="Label showing which trainer the data is being submitted for"
+        />
+        {' '}
+        <strong>{trainerName}</strong>
+      </p>
+
+      {submitMessage && <div className="my-3 rounded bg-green text-black p-2">{submitMessage}</div>
       {errorMessage && <div className="my-3 rounded bg-red text-black p-2">{errorMessage}</div>}
 
       <form onSubmit={handleSubmit} noValidate autoComplete="off" className="space-y-6">

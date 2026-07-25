@@ -11,6 +11,9 @@ interface ApiResponse {
   message?: string;
 }
 
+// String columns that should not be parsed as numbers
+const STRING_COLUMNS = new Set(['friendship_id', 'friend_code', 'event_badges']);
+
 // List of all allowed columns from the player table (whitelist to prevent arbitrary field injection)
 const ALLOWED_COLUMNS = [
   'friendship_id',
@@ -141,16 +144,20 @@ export default async (request: NextApiRequest, response: NextApiResponse<ApiResp
     const value = formData[column];
     if (value !== undefined && value !== null && value !== '') {
       fields.push(column);
-      // Convert numeric strings to numbers, keep strings as-is
-      const parsed: number | null =
-        column === 'km_walked' || column === 'trade_km'
-          ? parseFloat(String(value))
-          : typeof value === 'string'
-          ? parseInt(value, 10)
-          : typeof value === 'number'
-          ? value
-          : null;
-      values.push(parsed);
+      // String columns are kept as strings; all others are parsed as numbers
+      if (STRING_COLUMNS.has(column)) {
+        values.push(typeof value === 'string' ? value.trim() : '');
+      } else {
+        let numValue: number | null =
+          column === 'km_walked' || column === 'trade_km'
+            ? parseFloat(String(value))
+            : typeof value === 'string'
+              ? parseInt(value, 10)
+              : typeof value === 'number'
+                ? (value as number)
+                : null;
+        values.push(Number.isNaN(numValue) ? null : numValue);
+      }
     }
   }
 

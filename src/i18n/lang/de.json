@@ -1111,6 +1111,10 @@
     "defaultMessage": "Bitte logge dich ein, um Daten zu übermitteln.",
     "description": "Login required message"
   },
+  "data_submission.trainer_label": {
+    "defaultMessage": "Daten werden eingereicht für Trainer:",
+    "description": "Label showing which trainer the data is being submitted for"
+  },
   "data_submission.submit_button": {
     "defaultMessage": "Daten einreichen",
     "description": "Submit button for data submission form"

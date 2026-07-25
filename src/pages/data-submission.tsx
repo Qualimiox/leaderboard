@@ -49,6 +49,11 @@ const DataSubmissionPage: NextPage = () => {
     if (status === 'authenticated' && trainerName) {
       fetchTrainerData();
     } else if (status === 'unauthenticated') {
+      setFormData({});
+      setIsLoading(false);
+    } else if (status === 'authenticated') {
+      // Authenticated but no trainer name yet — show empty form
+      setFormData({});
       setIsLoading(false);
     }
   }, [status, trainerName, fetchTrainerData]);

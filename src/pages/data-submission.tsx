@@ -364,7 +364,6 @@ const DataSubmissionPage: NextPage = () => {
 
   const [formData, setFormData] = useState<TrainerData>({});
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
-  const [focusedField, setFocusedField] = useState<string | null>(null);
   const [kmWalkedTyping, setKmWalkedTyping] = useState(false);
   const [resolvedTrainerName, setResolvedTrainerName] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -617,7 +616,6 @@ const DataSubmissionPage: NextPage = () => {
                 }
               }}
               onFocus={() => {
-                setFocusedField(field);
                 // Round current km_walked value on focus
                 if (field === 'km_walked') {
                   const numValue = formData[field] as number;
@@ -627,7 +625,6 @@ const DataSubmissionPage: NextPage = () => {
                 }
               }}
               onBlur={() => {
-                setFocusedField(null);
                 // Round km_walked value on blur
                 if (field === 'km_walked') {
                   const numValue = formData[field] as number;

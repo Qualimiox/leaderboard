@@ -511,8 +511,8 @@ const DataSubmissionPage: NextPage = () => {
   });
 
   return (
-    <div className="min-h-screen bg-gray-900 border-0">
-      <div className="max-w-4xl mx-auto p-6 border-0">
+    <div className="w-full min-h-screen bg-gray-900" style={{ padding: 'inherit' }}>
+      <div className="max-w-4xl mx-auto p-6">
         <Head>
           <title key="title">{title}</title>
           <meta
@@ -526,7 +526,7 @@ const DataSubmissionPage: NextPage = () => {
           />
         </Head>
 
-        <h1 className="title-1 mt-2.5 lg:mt-0.5 text-white">{title}</h1>
+        <h1 className="title-1 mt-2.5 lg:mt-0.5" style={{ color: 'white' }}>{title}</h1>
 
         {trainerName || resolvedTrainerName ? (
           <p className="text-lg text-gray-300">

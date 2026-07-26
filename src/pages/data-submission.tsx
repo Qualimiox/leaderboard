@@ -597,7 +597,11 @@ const DataSubmissionPage: NextPage = () => {
               value={displayValue as string}
               onChange={(e) => {
                 const value =
-                  inputType === 'number' ? (e.target.value ? parseFloat(e.target.value) : null) : e.target.value || null;
+                  inputType === 'number'
+                    ? e.target.value
+                      ? parseFloat(e.target.value)
+                      : null
+                    : e.target.value || null;
                 handleChange(field, value);
               }}
               onFocus={() => setFocusedField(field)}

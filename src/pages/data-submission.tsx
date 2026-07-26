@@ -9,6 +9,7 @@ import { Button } from '@/components/button';
 import { wrapStaticPropsWithLocale } from '@/utils/i18n';
 import { BadgeIcon } from '@/features/profile/components/BadgeIcon';
 import { Badge } from '@/types';
+import { Team } from '@/types';
 
 interface TrainerData {
   [key: string]: string | number | null;
@@ -19,10 +20,24 @@ interface FormField {
   labelId: string;
   labelText: string;
   badge?: Badge;
-  type?: 'text' | 'number';
+  type?: 'text' | 'number' | 'select';
+  options?: Array<{ value: number; labelId: string; labelText: string }>;
 }
 
 const FORM_FIELDS: FormField[] = [
+  {
+    field: 'team',
+    labelId: 'data_submission.team',
+    labelText: 'Team',
+    type: 'select',
+    options: [
+      { value: Team.MYSTIC, labelId: 'team.mystic', labelText: 'Mystic' },
+      { value: Team.VALOR, labelId: 'team.valor', labelText: 'Valor' },
+      { value: Team.INSTINCT, labelId: 'team.instinct', labelText: 'Instinct' },
+    ],
+  },
+  { field: 'level', labelId: 'data_submission.level', labelText: 'Level', badge: undefined },
+  { field: 'xp', labelId: 'data_submission.xp', labelText: 'XP', badge: undefined },
   { field: 'km_walked', labelId: 'data_submission.km_walked', labelText: 'Km Walked', badge: Badge.KM_WALKED },
   { field: 'dex_gen1', labelId: 'data_submission.dex_gen1', labelText: 'Gen 1', badge: Badge.DEX_GEN_1 },
   {
@@ -416,19 +431,47 @@ const DataSubmissionPage: NextPage = () => {
   };
 
   const renderField = (config: FormField) => {
-    const { field, labelId, labelText, badge, type } = config;
+    const { field, labelId, labelText, badge, type, options } = config;
     const inputType = type ?? 'number';
+
+    if (inputType === 'select' && options) {
+      return (
+        <div className="mb-3 flex items-center gap-2">
+          {badge && <BadgeIcon badge={badge} value={(formData[field] as number) ?? 0} />}
+          <label className="flex-1">
+            <span className="block text-sm font-medium text-gray-300">
+              {intl.formatMessage({ id: labelId, defaultMessage: labelText, description: `Label for ${field}` })}
+            </span>
+            <select
+              className="mt-1 block w-full rounded border border-gray-600 bg-white px-2 py-1 text-sm text-gray-900"
+              value={(formData[field] as number) ?? ''}
+              onChange={(e) => {
+                const value = e.target.value ? parseInt(e.target.value, 10) : null;
+                handleChange(field, value);
+              }}
+            >
+              <option value="">—</option>
+              {options.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {intl.formatMessage({ id: option.labelId, defaultMessage: option.labelText })}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+      );
+    }
 
     return (
       <div className="mb-3 flex items-center gap-2">
         {badge && <BadgeIcon badge={badge} value={(formData[field] as number) ?? 0} />}
         <label className="flex-1">
-          <span className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+          <span className="block text-sm font-medium text-gray-300">
             {intl.formatMessage({ id: labelId, defaultMessage: labelText, description: `Label for ${field}` })}
           </span>
           <input
             type={inputType}
-            className="mt-1 block w-full rounded border border-gray-300 bg-white px-2 py-1 text-sm dark:border-gray-600 dark:bg-gray-800"
+            className="mt-1 block w-full rounded border border-gray-600 bg-white px-2 py-1 text-sm text-gray-900"
             value={(formData[field] ?? '') as string}
             onChange={(e) => {
               const value =
@@ -468,8 +511,9 @@ const DataSubmissionPage: NextPage = () => {
   });
 
   return (
-    <>
-      <Head>
+    <div className="min-h-screen bg-gray-900">
+      <div className="max-w-4xl mx-auto p-6">
+        <Head>
         <title key="title">{title}</title>
         <meta
           key="description"
@@ -482,20 +526,20 @@ const DataSubmissionPage: NextPage = () => {
         />
       </Head>
 
-      <h1 className="title-1 mt-2.5 lg:mt-0.5">{title}</h1>
+      <h1 className="title-1 mt-2.5 lg:mt-0.5 text-white">{title}</h1>
 
       {trainerName || resolvedTrainerName ? (
-        <p className="text-lg text-gray-700 dark:text-gray-300">
+        <p className="text-lg text-gray-300">
           <FormattedMessage
             id="data_submission.trainer_label"
             defaultMessage="Submitting data for trainer:"
             description="Label showing which trainer the data is being submitted for"
           />{' '}
-          <strong>{trainerName || resolvedTrainerName}</strong>
+          <strong className="text-white">{trainerName || resolvedTrainerName}</strong>
         </p>
       ) : (
         <div className="mb-4">
-          <label className="block text-lg font-medium text-gray-700 dark:text-gray-300">
+          <label className="block text-lg font-medium text-gray-300">
             <FormattedMessage
               id="data_submission.trainer_name"
               defaultMessage="Trainer Name"
@@ -503,7 +547,7 @@ const DataSubmissionPage: NextPage = () => {
             />
             <input
               type="text"
-              className="mt-1 block w-full rounded border border-gray-300 bg-white px-2 py-1 text-sm dark:border-gray-600 dark:bg-gray-800"
+              className="mt-1 block w-full rounded border border-gray-600 bg-white px-2 py-1 text-sm text-gray-900"
               value={(formData.name ?? '') as string}
               onChange={(e) => handleChange('name', e.target.value)}
             />
@@ -511,8 +555,8 @@ const DataSubmissionPage: NextPage = () => {
         </div>
       )}
 
-      {submitMessage && <div className="my-3 rounded bg-green text-black p-2">{submitMessage}</div>}
-      {errorMessage && <div className="my-3 rounded bg-red text-black p-2">{errorMessage}</div>}
+      {submitMessage && <div className="my-3 rounded bg-green text-white p-2">{submitMessage}</div>}
+      {errorMessage && <div className="my-3 rounded bg-red text-white p-2">{errorMessage}</div>}
 
       <form onSubmit={handleSubmit} noValidate autoComplete="off" className="space-y-6">
         <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
@@ -527,7 +571,8 @@ const DataSubmissionPage: NextPage = () => {
           />
         </Button>
       </form>
-    </>
+      </div>
+    </div>
   );
 };
 

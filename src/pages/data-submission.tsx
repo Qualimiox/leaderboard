@@ -364,6 +364,7 @@ const DataSubmissionPage: NextPage = () => {
 
   const [formData, setFormData] = useState<TrainerData>({});
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [focusedField, setFocusedField] = useState<string | null>(null);
   const [resolvedTrainerName, setResolvedTrainerName] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
@@ -542,63 +543,69 @@ const DataSubmissionPage: NextPage = () => {
 
     if (inputType === 'select' && options) {
       return (
-        <div className="mb-3 flex items-center gap-2">
-          {iconElement}
-          <label className="flex-1">
-            <span className="block text-sm font-medium text-gray-300">
-              {intl.formatMessage({ id: labelId, defaultMessage: labelText, description: `Label for ${field}` })}
-            </span>
-            <select
-              className="mt-1 block w-full rounded border border-gray-600 bg-white px-2 py-1 text-sm text-gray-900"
-              value={(formData[field] as number) ?? ''}
-              onChange={(e) => {
-                const value = e.target.value ? parseInt(e.target.value, 10) : null;
-                handleChange(field, value);
-              }}
-            >
-              <option value="">—</option>
-              {options.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {intl.formatMessage({ id: option.labelId, defaultMessage: option.labelText })}
-                </option>
-              ))}
-            </select>
-          </label>
+        <div className="mb-3">
+          <div className="flex items-center gap-2">
+            {iconElement}
+            <label className="flex-1">
+              <span className="block text-sm font-medium text-gray-300">
+                {intl.formatMessage({ id: labelId, defaultMessage: labelText, description: `Label for ${field}` })}
+              </span>
+              <select
+                className="mt-1 block w-full rounded border border-gray-600 bg-white px-2 py-1 text-sm text-gray-900"
+                value={(formData[field] as number) ?? ''}
+                onChange={(e) => {
+                  const value = e.target.value ? parseInt(e.target.value, 10) : null;
+                  handleChange(field, value);
+                }}
+              >
+                <option value="">—</option>
+                {options.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {intl.formatMessage({ id: option.labelId, defaultMessage: option.labelText })}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
         </div>
       );
     }
 
     const fieldError = formErrors[field];
 
-    // Round km_walked to one decimal place for display
+    // Round km_walked to one decimal place only when not in focus
     const displayValue =
-      field === 'km_walked'
+      field === 'km_walked' && focusedField !== field
         ? typeof (formData[field] as number) === 'number' && !Number.isNaN(formData[field] as number)
           ? (formData[field] as number).toFixed(1)
           : formData[field] ?? ''
         : formData[field] ?? '';
 
     return (
-      <div className="mb-3 flex items-center gap-2">
-        {iconElement}
-        <label className="flex-1">
-          <span className="block text-sm font-medium text-gray-300">
-            {intl.formatMessage({ id: labelId, defaultMessage: labelText, description: `Label for ${field}` })}
-          </span>
-          <input
-            type={inputType}
-            className={`mt-1 block w-full rounded border ${
-              formErrors[field] ? 'border-red' : 'border-gray-600'
-            } bg-white px-2 py-1 text-sm text-gray-900`}
-            value={displayValue as string}
-            onChange={(e) => {
-              const value =
-                inputType === 'number' ? (e.target.value ? parseFloat(e.target.value) : null) : e.target.value || null;
-              handleChange(field, value);
-            }}
-          />
-        </label>
-        {fieldError && <div className="flex-shrink-0 rounded bg-red text-white px-2 py-1 text-xs">{fieldError}</div>}
+      <div className="mb-3">
+        <div className="flex items-center gap-2">
+          {iconElement}
+          <label className="flex-1">
+            <span className="block text-sm font-medium text-gray-300">
+              {intl.formatMessage({ id: labelId, defaultMessage: labelText, description: `Label for ${field}` })}
+            </span>
+            <input
+              type={inputType}
+              className={`mt-1 block w-full rounded border ${
+                formErrors[field] ? 'border-red' : 'border-gray-600'
+              } bg-white px-2 py-1 text-sm text-gray-900`}
+              value={displayValue as string}
+              onChange={(e) => {
+                const value =
+                  inputType === 'number' ? (e.target.value ? parseFloat(e.target.value) : null) : e.target.value || null;
+                handleChange(field, value);
+              }}
+              onFocus={() => setFocusedField(field)}
+              onBlur={() => setFocusedField(null)}
+            />
+          </label>
+        </div>
+        {fieldError && <div className="mt-1 rounded bg-red text-white px-2 py-1 text-xs">{fieldError}</div>}
       </div>
     );
   };

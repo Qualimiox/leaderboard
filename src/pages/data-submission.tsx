@@ -511,8 +511,8 @@ const DataSubmissionPage: NextPage = () => {
   });
 
   return (
-    <div className="min-h-screen bg-gray-900">
-      <div className="max-w-4xl mx-auto p-6">
+    <div className="min-h-screen bg-gray-900 border-0">
+      <div className="max-w-4xl mx-auto p-6 border-0">
         <Head>
           <title key="title">{title}</title>
           <meta
@@ -555,21 +555,22 @@ const DataSubmissionPage: NextPage = () => {
           </div>
         )}
 
-        {submitMessage && <div className="my-3 rounded bg-green text-white p-2">{submitMessage}</div>}
-        {errorMessage && <div className="my-3 rounded bg-red text-white p-2">{errorMessage}</div>}
-
         <form onSubmit={handleSubmit} noValidate autoComplete="off" className="space-y-6">
           <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
             {FORM_FIELDS.map((config) => renderField(config))}
           </div>
 
-          <Button type="submit" disabled={isSubmitting} className="px-3">
-            <FormattedMessage
-              id="data_submission.submit_button"
-              defaultMessage="Submit Data"
-              description="Submit button for data submission form"
-            />
-          </Button>
+          <div className="flex items-center gap-3">
+            <Button type="submit" disabled={isSubmitting} className="px-3">
+              <FormattedMessage
+                id="data_submission.submit_button"
+                defaultMessage="Submit Data"
+                description="Submit button for data submission form"
+              />
+            </Button>
+            {submitMessage && <div className="rounded bg-green text-white px-3 py-1">{submitMessage}</div>}
+            {errorMessage && <div className="rounded bg-red text-white px-3 py-1">{errorMessage}</div>}
+          </div>
         </form>
       </div>
     </div>

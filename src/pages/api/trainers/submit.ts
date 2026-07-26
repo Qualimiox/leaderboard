@@ -183,11 +183,7 @@ export default async (request: NextApiRequest, response: NextApiResponse<ApiResp
       if (column === 'gym_battles_won') {
         fields.push('battles_won');
         const numValue: number | null =
-          typeof value === 'string'
-            ? parseInt(value, 10)
-            : typeof value === 'number'
-            ? (value as number)
-            : null;
+          typeof value === 'string' ? parseInt(value, 10) : typeof value === 'number' ? (value as number) : null;
 
         values.push(Number.isNaN(numValue) ? null : numValue);
       }

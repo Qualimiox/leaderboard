@@ -10,6 +10,11 @@ import { wrapStaticPropsWithLocale } from '@/utils/i18n';
 import { BadgeIcon } from '@/features/profile/components/BadgeIcon';
 import { Badge } from '@/types';
 import { Team } from '@/types';
+import { Instinct } from '@/components/icons/Instinct';
+import { Mystic } from '@/components/icons/Mystic';
+import { PokeballIcon } from '@/components/icons/PokeballIcon';
+import { TrainerIcon } from '@/components/icons/TrainerIcon';
+import { Valor } from '@/components/icons/Valor';
 
 interface TrainerData {
   [key: string]: string | number | null;
@@ -20,6 +25,7 @@ interface FormField {
   labelId: string;
   labelText: string;
   badge?: Badge;
+  icon?: JSX.Element | ((value: number | null) => JSX.Element);
   type?: 'text' | 'number' | 'select';
   options?: Array<{ value: number; labelId: string; labelText: string }>;
 }
@@ -35,9 +41,32 @@ const FORM_FIELDS: FormField[] = [
       { value: Team.VALOR, labelId: 'team.valor', labelText: 'Valor' },
       { value: Team.INSTINCT, labelId: 'team.instinct', labelText: 'Instinct' },
     ],
+    icon: (value) => {
+      const teamValue = typeof value === 'number' ? value : 0;
+      switch (teamValue) {
+        case Team.MYSTIC:
+          return <Mystic className="w-9 h-9 flex-shrink-0" />;
+        case Team.VALOR:
+          return <Valor className="w-9 h-9 flex-shrink-0" />;
+        case Team.INSTINCT:
+          return <Instinct className="w-9 h-9 flex-shrink-0" />;
+        default:
+          return <div className="w-9 h-9 flex-shrink-0" />;
+      }
+    },
   },
-  { field: 'level', labelId: 'data_submission.level', labelText: 'Level', badge: undefined },
-  { field: 'xp', labelId: 'data_submission.xp', labelText: 'XP', badge: undefined },
+  {
+    field: 'level',
+    labelId: 'data_submission.level',
+    labelText: 'Level',
+    icon: <TrainerIcon className="w-9 h-9 flex-shrink-0" />,
+  },
+  {
+    field: 'xp',
+    labelId: 'data_submission.xp',
+    labelText: 'XP',
+    icon: <PokeballIcon className="w-9 h-9 flex-shrink-0" />,
+  },
   { field: 'km_walked', labelId: 'data_submission.km_walked', labelText: 'Km Walked', badge: Badge.KM_WALKED },
   { field: 'dex_gen1', labelId: 'data_submission.dex_gen1', labelText: 'Gen 1', badge: Badge.DEX_GEN_1 },
   {
@@ -443,13 +472,26 @@ const DataSubmissionPage: NextPage = () => {
   };
 
   const renderField = (config: FormField) => {
-    const { field, labelId, labelText, badge, type, options } = config;
+    const { field, labelId, labelText, badge, icon, type, options } = config;
     const inputType = type ?? 'number';
+
+    // Render the icon or badge
+    let iconElement: JSX.Element | undefined;
+    if (badge) {
+      iconElement = <BadgeIcon badge={badge} value={(formData[field] as number) ?? 0} />;
+    } else if (icon) {
+      const fieldValue = formData[field] as number | null;
+      if (typeof icon === 'function') {
+        iconElement = icon(fieldValue);
+      } else {
+        iconElement = icon;
+      }
+    }
 
     if (inputType === 'select' && options) {
       return (
         <div className="mb-3 flex items-center gap-2">
-          {badge && <BadgeIcon badge={badge} value={(formData[field] as number) ?? 0} />}
+          {iconElement}
           <label className="flex-1">
             <span className="block text-sm font-medium text-gray-300">
               {intl.formatMessage({ id: labelId, defaultMessage: labelText, description: `Label for ${field}` })}
@@ -476,7 +518,7 @@ const DataSubmissionPage: NextPage = () => {
 
     return (
       <div className="mb-3 flex items-center gap-2">
-        {badge && <BadgeIcon badge={badge} value={(formData[field] as number) ?? 0} />}
+        {iconElement}
         <label className="flex-1">
           <span className="block text-sm font-medium text-gray-300">
             {intl.formatMessage({ id: labelId, defaultMessage: labelText, description: `Label for ${field}` })}

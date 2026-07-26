@@ -194,16 +194,30 @@ export default async (request: NextApiRequest, response: NextApiResponse<ApiResp
     // Only last_seen was set — still valid for a heartbeat update
   }
 
-  const columns = fields.map((f) => `\`${f}\``).join(', ');
-  const placeholders = fields.map(() => '?').join(', ');
-  const updateClause = fields
+  // Deduplicate fields (e.g., battles_won can be added both by gym_battles_won handler and the main loop)
+  const seenFields = new Set<string>();
+  const uniqueFields: string[] = [];
+  const uniqueValues: (string | number | null)[] = [];
+
+  for (let i = 0; i < fields.length; i += 1) {
+    const field = fields[i];
+    if (!seenFields.has(field)) {
+      seenFields.add(field);
+      uniqueFields.push(field);
+      uniqueValues.push(values[i]);
+    }
+  }
+
+  const columns = uniqueFields.map((f) => `\`${f}\``).join(', ');
+  const placeholders = uniqueFields.map(() => '?').join(', ');
+  const updateClause = uniqueFields
     .filter((f) => f !== 'name')
     .map((f) => `\`${f}\` = VALUES(\`${f}\`)`)
     .join(', ');
 
   const sql = `INSERT INTO \`player\` (\`name\`, ${columns}) VALUES (?, ${placeholders}) ON DUPLICATE KEY UPDATE ${updateClause}`;
 
-  const params: (string | number | null)[] = [name, ...values];
+  const params: (string | number | null)[] = [name, ...uniqueValues];
 
   try {
     await pool.execute(sql, params);

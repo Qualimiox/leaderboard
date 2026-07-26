@@ -512,8 +512,8 @@ const DataSubmissionPage: NextPage = () => {
 
   return (
     <div
-      className="min-h-screen bg-gray-900"
-      style={{ margin: '-2.5rem', width: 'calc(100% + 5rem)' }}
+      className="min-h-screen bg-gray-900 -m-4 lg:-m-10"
+      style={{ width: 'calc(100vw)', boxSizing: 'border-box' }}
     >
       <div className="max-w-4xl mx-auto py-6 px-4 lg:px-10">
         <Head>

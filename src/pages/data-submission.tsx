@@ -571,11 +571,12 @@ const DataSubmissionPage: NextPage = () => {
     const fieldError = formErrors[field];
 
     // Round km_walked to one decimal place for display
-    const displayValue = field === 'km_walked'
-      ? typeof (formData[field] as number) === 'number' && !Number.isNaN(formData[field] as number)
-        ? ((formData[field] as number).toFixed(1))
-        : (formData[field] ?? '')
-      : (formData[field] ?? '');
+    const displayValue =
+      field === 'km_walked'
+        ? typeof (formData[field] as number) === 'number' && !Number.isNaN(formData[field] as number)
+          ? (formData[field] as number).toFixed(1)
+          : formData[field] ?? ''
+        : formData[field] ?? '';
 
     return (
       <div className="mb-3 flex items-center gap-2">
@@ -586,7 +587,9 @@ const DataSubmissionPage: NextPage = () => {
           </span>
           <input
             type={inputType}
-            className={`mt-1 block w-full rounded border ${formErrors[field] ? 'border-red' : 'border-gray-600'} bg-white px-2 py-1 text-sm text-gray-900`}
+            className={`mt-1 block w-full rounded border ${
+              formErrors[field] ? 'border-red' : 'border-gray-600'
+            } bg-white px-2 py-1 text-sm text-gray-900`}
             value={displayValue as string}
             onChange={(e) => {
               const value =
@@ -595,11 +598,7 @@ const DataSubmissionPage: NextPage = () => {
             }}
           />
         </label>
-        {fieldError && (
-          <div className="flex-shrink-0 rounded bg-red text-white px-2 py-1 text-xs">
-            {fieldError}
-          </div>
-        )}
+        {fieldError && <div className="flex-shrink-0 rounded bg-red text-white px-2 py-1 text-xs">{fieldError}</div>}
       </div>
     );
   };

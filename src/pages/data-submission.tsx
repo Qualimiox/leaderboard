@@ -514,63 +514,63 @@ const DataSubmissionPage: NextPage = () => {
     <div className="min-h-screen bg-gray-900">
       <div className="max-w-4xl mx-auto p-6">
         <Head>
-        <title key="title">{title}</title>
-        <meta
-          key="description"
-          name="description"
-          content={intl.formatMessage({
-            id: 'data_submission.description',
-            defaultMessage: 'Submit your Pokémon Go trainer data manually',
-            description: 'Data submission page meta description',
-          })}
-        />
-      </Head>
-
-      <h1 className="title-1 mt-2.5 lg:mt-0.5 text-white">{title}</h1>
-
-      {trainerName || resolvedTrainerName ? (
-        <p className="text-lg text-gray-300">
-          <FormattedMessage
-            id="data_submission.trainer_label"
-            defaultMessage="Submitting data for trainer:"
-            description="Label showing which trainer the data is being submitted for"
-          />{' '}
-          <strong className="text-white">{trainerName || resolvedTrainerName}</strong>
-        </p>
-      ) : (
-        <div className="mb-4">
-          <label className="block text-lg font-medium text-gray-300">
-            <FormattedMessage
-              id="data_submission.trainer_name"
-              defaultMessage="Trainer Name"
-              description="Label for trainer name input field"
-            />
-            <input
-              type="text"
-              className="mt-1 block w-full rounded border border-gray-600 bg-white px-2 py-1 text-sm text-gray-900"
-              value={(formData.name ?? '') as string}
-              onChange={(e) => handleChange('name', e.target.value)}
-            />
-          </label>
-        </div>
-      )}
-
-      {submitMessage && <div className="my-3 rounded bg-green text-white p-2">{submitMessage}</div>}
-      {errorMessage && <div className="my-3 rounded bg-red text-white p-2">{errorMessage}</div>}
-
-      <form onSubmit={handleSubmit} noValidate autoComplete="off" className="space-y-6">
-        <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
-          {FORM_FIELDS.map((config) => renderField(config))}
-        </div>
-
-        <Button type="submit" disabled={isSubmitting} className="px-3">
-          <FormattedMessage
-            id="data_submission.submit_button"
-            defaultMessage="Submit Data"
-            description="Submit button for data submission form"
+          <title key="title">{title}</title>
+          <meta
+            key="description"
+            name="description"
+            content={intl.formatMessage({
+              id: 'data_submission.description',
+              defaultMessage: 'Submit your Pokémon Go trainer data manually',
+              description: 'Data submission page meta description',
+            })}
           />
-        </Button>
-      </form>
+        </Head>
+
+        <h1 className="title-1 mt-2.5 lg:mt-0.5 text-white">{title}</h1>
+
+        {trainerName || resolvedTrainerName ? (
+          <p className="text-lg text-gray-300">
+            <FormattedMessage
+              id="data_submission.trainer_label"
+              defaultMessage="Submitting data for trainer:"
+              description="Label showing which trainer the data is being submitted for"
+            />{' '}
+            <strong className="text-white">{trainerName || resolvedTrainerName}</strong>
+          </p>
+        ) : (
+          <div className="mb-4">
+            <label className="block text-lg font-medium text-gray-300">
+              <FormattedMessage
+                id="data_submission.trainer_name"
+                defaultMessage="Trainer Name"
+                description="Label for trainer name input field"
+              />
+              <input
+                type="text"
+                className="mt-1 block w-full rounded border border-gray-600 bg-white px-2 py-1 text-sm text-gray-900"
+                value={(formData.name ?? '') as string}
+                onChange={(e) => handleChange('name', e.target.value)}
+              />
+            </label>
+          </div>
+        )}
+
+        {submitMessage && <div className="my-3 rounded bg-green text-white p-2">{submitMessage}</div>}
+        {errorMessage && <div className="my-3 rounded bg-red text-white p-2">{errorMessage}</div>}
+
+        <form onSubmit={handleSubmit} noValidate autoComplete="off" className="space-y-6">
+          <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
+            {FORM_FIELDS.map((config) => renderField(config))}
+          </div>
+
+          <Button type="submit" disabled={isSubmitting} className="px-3">
+            <FormattedMessage
+              id="data_submission.submit_button"
+              defaultMessage="Submit Data"
+              description="Submit button for data submission form"
+            />
+          </Button>
+        </form>
       </div>
     </div>
   );

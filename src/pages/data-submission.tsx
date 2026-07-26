@@ -511,7 +511,7 @@ const DataSubmissionPage: NextPage = () => {
   });
 
   return (
-    <div className="min-h-screen w-full bg-gray-900 -m-4 lg:-m-10">
+    <div className="min-h-screen w-full bg-gray-900 -m-4" style={{ width: 'calc(100% + 2rem)' }}>
       <div className="max-w-4xl mx-auto py-6 px-4 lg:px-10">
         <Head>
           <title key="title">{title}</title>

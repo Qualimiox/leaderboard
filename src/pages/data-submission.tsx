@@ -365,6 +365,7 @@ const DataSubmissionPage: NextPage = () => {
   const [formData, setFormData] = useState<TrainerData>({});
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [focusedField, setFocusedField] = useState<string | null>(null);
+  const [kmWalkedTyping, setKmWalkedTyping] = useState(false);
   const [resolvedTrainerName, setResolvedTrainerName] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
@@ -573,13 +574,20 @@ const DataSubmissionPage: NextPage = () => {
 
     const fieldError = formErrors[field];
 
-    // Round km_walked to one decimal place only when not in focus
-    const displayValue =
-      field === 'km_walked' && focusedField !== field
-        ? typeof (formData[field] as number) === 'number' && !Number.isNaN(formData[field] as number)
-          ? (formData[field] as number).toFixed(1)
-          : formData[field] ?? ''
-        : formData[field] ?? '';
+    // Round km_walked to one decimal place on focus and on blur, but not while typing
+    const rawValue = formData[field];
+    let displayValue: string | number | null;
+    if (field === 'km_walked') {
+      const numValue = typeof rawValue === 'number' ? rawValue : parseFloat(String(rawValue));
+      if (!Number.isNaN(numValue) && numValue !== 0) {
+        // Show raw while typing, rounded otherwise
+        displayValue = kmWalkedTyping ? rawValue : numValue.toFixed(1);
+      } else {
+        displayValue = rawValue ?? '';
+      }
+    } else {
+      displayValue = rawValue ?? '';
+    }
 
     return (
       <div className="mb-3">
@@ -603,9 +611,32 @@ const DataSubmissionPage: NextPage = () => {
                       : null
                     : e.target.value || null;
                 handleChange(field, value);
+                // Mark km_walked as actively typing so it shows raw input
+                if (field === 'km_walked') {
+                  setKmWalkedTyping(true);
+                }
               }}
-              onFocus={() => setFocusedField(field)}
-              onBlur={() => setFocusedField(null)}
+              onFocus={() => {
+                setFocusedField(field);
+                // Round current km_walked value on focus
+                if (field === 'km_walked') {
+                  const numValue = formData[field] as number;
+                  if (typeof numValue === 'number' && !Number.isNaN(numValue) && numValue !== 0) {
+                    setFormData((prev) => ({ ...prev, km_walked: parseFloat(numValue.toFixed(1)) }));
+                  }
+                }
+              }}
+              onBlur={() => {
+                setFocusedField(null);
+                // Round km_walked value on blur
+                if (field === 'km_walked') {
+                  const numValue = formData[field] as number;
+                  if (typeof numValue === 'number' && !Number.isNaN(numValue) && numValue !== 0) {
+                    setFormData((prev) => ({ ...prev, km_walked: parseFloat(numValue.toFixed(1)) }));
+                  }
+                }
+                setKmWalkedTyping(false);
+              }}
             />
           </label>
         </div>

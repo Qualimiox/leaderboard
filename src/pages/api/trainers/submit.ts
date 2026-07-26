@@ -178,6 +178,19 @@ export default async (request: NextApiRequest, response: NextApiResponse<ApiResp
           values.push(numValue);
         }
       }
+
+      // gym_battles_won also sets battles_won to the same value
+      if (column === 'gym_battles_won') {
+        fields.push('battles_won');
+        const numValue: number | null =
+          typeof value === 'string'
+            ? parseInt(value, 10)
+            : typeof value === 'number'
+            ? (value as number)
+            : null;
+
+        values.push(Number.isNaN(numValue) ? null : numValue);
+      }
     }
   }
 

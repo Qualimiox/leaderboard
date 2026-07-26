@@ -61,6 +61,12 @@ const FORM_FIELDS: FormField[] = [
     labelText: 'Gym Battles Won',
     badge: Badge.GYM_BATTLES_WON,
   },
+  {
+    field: 'trainings_won',
+    labelId: 'data_submission.trainings_won',
+    labelText: 'Trainings Won',
+    badge: Badge.TRAININGS_WON,
+  },
   { field: 'xl_karps', labelId: 'data_submission.xl_karps', labelText: 'XL Karps', badge: Badge.XL_KARPS },
   { field: 'xs_rats', labelId: 'data_submission.xs_rats', labelText: 'XS Rats', badge: Badge.XS_RATS },
   {
@@ -171,6 +177,12 @@ const FORM_FIELDS: FormField[] = [
     labelId: 'data_submission.caught_at_lure',
     labelText: 'Caught At Lure',
     badge: Badge.CAUGHT_AT_LURE,
+  },
+  {
+    field: 'wayfarer_agreements',
+    labelId: 'data_submission.wayfarer_agreements',
+    labelText: 'Wayfarer Agreements',
+    badge: Badge.WAYFARER_AGREEMENTS,
   },
   { field: 'mega_evos', labelId: 'data_submission.mega_evos', labelText: 'Mega Evolutions', badge: Badge.MEGA_EVOS },
   {
@@ -526,12 +538,12 @@ const DataSubmissionPage: NextPage = () => {
           />
         </Head>
 
-        <h1 className="title-1 mt-2.5 lg:mt-0.5" style={{ color: 'white' }}>
+        <h1 className="title-1 mt-2.5 lg:mt-0.5 mb-6" style={{ color: 'white' }}>
           {title}
         </h1>
 
         {trainerName || resolvedTrainerName ? (
-          <p className="text-lg text-gray-300">
+          <p className="text-lg text-gray-300 mb-6">
             <FormattedMessage
               id="data_submission.trainer_label"
               defaultMessage="Submitting data for trainer:"
@@ -540,7 +552,7 @@ const DataSubmissionPage: NextPage = () => {
             <strong className="text-white">{trainerName || resolvedTrainerName}</strong>
           </p>
         ) : (
-          <div className="mb-4">
+          <div className="mb-6">
             <label className="block text-lg font-medium text-gray-300">
               <FormattedMessage
                 id="data_submission.trainer_name"

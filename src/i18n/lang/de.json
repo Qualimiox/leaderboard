@@ -676,8 +676,8 @@
     "description": "Registrierungsfehler, wenn der Trainer nicht gefunden wird"
   },
   "team.instinct": {
-    "defaultMessage": "Instinkt",
-    "description": "Team Instinkt"
+    "defaultMessage": "Intuition",
+    "description": "Team Intuition"
   },
   "team.mystic": {
     "defaultMessage": "Weisheit",
@@ -964,15 +964,15 @@
     "description": "Label for total_route_play field"
   },
   "data_submission.parties_completed": {
-    "defaultMessage": "Abgeschlossene Partys",
+    "defaultMessage": "Teamwork",
     "description": "Label for parties_completed field"
   },
   "data_submission.event_check_ins": {
-    "defaultMessage": "Event-Check-ins",
+    "defaultMessage": "Community-Mitglied",
     "description": "Label for event_check_ins field"
   },
   "data_submission.seven_day_streaks": {
-    "defaultMessage": "7-Tage-Serien",
+    "defaultMessage": "Triathlet",
     "description": "Label for seven_day_streaks field"
   },
   "data_submission.caught_at_lure": {
@@ -1112,7 +1112,7 @@
     "description": "Login required message"
   },
   "data_submission.trainer_label": {
-    "defaultMessage": "Daten werden eingereicht für Trainer:",
+    "defaultMessage": "Daten für Trainer:",
     "description": "Label showing which trainer the data is being submitted for"
   },
   "data_submission.submit_button": {

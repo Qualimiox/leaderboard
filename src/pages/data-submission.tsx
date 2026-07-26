@@ -363,6 +363,7 @@ const DataSubmissionPage: NextPage = () => {
   const discordId = session?.discordId ?? '';
 
   const [formData, setFormData] = useState<TrainerData>({});
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [resolvedTrainerName, setResolvedTrainerName] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
@@ -431,7 +432,58 @@ const DataSubmissionPage: NextPage = () => {
   }, [status, trainerName, discordId, fetchTrainerData]);
 
   const handleChange = (field: string, value: string | number | null) => {
+    let error = '';
+
+    if (value !== null && value !== '') {
+      // km_walked accepts positive floats or integers or 0
+      if (field === 'km_walked') {
+        const numValue = typeof value === 'string' ? parseFloat(value) : value;
+        if (typeof numValue === 'number' && !Number.isNaN(numValue)) {
+          if (numValue < 0) {
+            error = intl.formatMessage({
+              id: 'data_submission.error_negative',
+              defaultMessage: 'Must be a positive number or zero.',
+              description: 'Error message for negative values',
+            });
+          }
+        } else {
+          error = intl.formatMessage({
+            id: 'data_submission.error_invalid_number',
+            defaultMessage: 'Please enter a valid number.',
+            description: 'Error message for invalid numbers',
+          });
+        }
+      } else {
+        // All other numeric fields accept only positive integers or 0
+        const numValue = typeof value === 'string' ? parseFloat(value) : value;
+        if (typeof numValue === 'number' && !Number.isNaN(numValue)) {
+          if (numValue < 0 || !Number.isInteger(numValue)) {
+            error = intl.formatMessage({
+              id: 'data_submission.error_integer',
+              defaultMessage: 'Must be a positive integer or zero.',
+              description: 'Error message for non-integer values',
+            });
+          }
+        } else {
+          error = intl.formatMessage({
+            id: 'data_submission.error_invalid_number',
+            defaultMessage: 'Please enter a valid number.',
+            description: 'Error message for invalid numbers',
+          });
+        }
+      }
+    }
+
     setFormData((prev) => ({ ...prev, [field]: value }));
+    setFormErrors((prev) => {
+      const next = { ...prev };
+      if (error) {
+        next[field] = error;
+      } else {
+        delete next[field];
+      }
+      return next;
+    });
   };
 
   const handleSubmit = async (event: FormEvent) => {
@@ -516,6 +568,15 @@ const DataSubmissionPage: NextPage = () => {
       );
     }
 
+    const fieldError = formErrors[field];
+
+    // Round km_walked to one decimal place for display
+    const displayValue = field === 'km_walked'
+      ? typeof (formData[field] as number) === 'number' && !Number.isNaN(formData[field] as number)
+        ? ((formData[field] as number).toFixed(1))
+        : (formData[field] ?? '')
+      : (formData[field] ?? '');
+
     return (
       <div className="mb-3 flex items-center gap-2">
         {iconElement}
@@ -525,8 +586,8 @@ const DataSubmissionPage: NextPage = () => {
           </span>
           <input
             type={inputType}
-            className="mt-1 block w-full rounded border border-gray-600 bg-white px-2 py-1 text-sm text-gray-900"
-            value={(formData[field] ?? '') as string}
+            className={`mt-1 block w-full rounded border ${formErrors[field] ? 'border-red' : 'border-gray-600'} bg-white px-2 py-1 text-sm text-gray-900`}
+            value={displayValue as string}
             onChange={(e) => {
               const value =
                 inputType === 'number' ? (e.target.value ? parseFloat(e.target.value) : null) : e.target.value || null;
@@ -534,6 +595,11 @@ const DataSubmissionPage: NextPage = () => {
             }}
           />
         </label>
+        {fieldError && (
+          <div className="flex-shrink-0 rounded bg-red text-white px-2 py-1 text-xs">
+            {fieldError}
+          </div>
+        )}
       </div>
     );
   };
@@ -617,7 +683,7 @@ const DataSubmissionPage: NextPage = () => {
           </div>
 
           <div className="flex items-center gap-3">
-            <Button type="submit" disabled={isSubmitting} className="px-3">
+            <Button type="submit" disabled={isSubmitting || Object.keys(formErrors).length > 0} className="px-3">
               <FormattedMessage
                 id="data_submission.submit_button"
                 defaultMessage="Submit Data"

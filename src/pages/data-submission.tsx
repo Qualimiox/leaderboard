@@ -526,7 +526,9 @@ const DataSubmissionPage: NextPage = () => {
           />
         </Head>
 
-        <h1 className="title-1 mt-2.5 lg:mt-0.5" style={{ color: 'white' }}>{title}</h1>
+        <h1 className="title-1 mt-2.5 lg:mt-0.5" style={{ color: 'white' }}>
+          {title}
+        </h1>
 
         {trainerName || resolvedTrainerName ? (
           <p className="text-lg text-gray-300">

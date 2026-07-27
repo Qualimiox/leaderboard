@@ -272,6 +272,55 @@ const FORM_FIELDS: FormField[] = [
     badge: Badge.SHOWCASE_MAX_SIZE_FIRST_PLACE,
   },
   {
+    field: 'collections_done',
+    labelId: 'data_submission.collections_done',
+    labelText: 'Elite Collector',
+    badge: Badge.COLLECTIONS_DONE,
+  },
+  {
+    field: 'gbl_rank',
+    labelId: 'data_submission.gbl_rank',
+    labelText: 'GBL Rank',
+    icon: (value) => {
+      const rankValue = typeof value === 'number' ? value : 0;
+      let src = '/badges/gbl/combat_rank_0.png';
+      if (rankValue >= 0 && rankValue <= 5) src = '/badges/gbl/combat_rank_0.png';
+      else if (rankValue >= 6 && rankValue <= 10) src = '/badges/gbl/combat_rank_1.png';
+      else if (rankValue >= 11 && rankValue <= 15) src = '/badges/gbl/combat_rank_2.png';
+      else if (rankValue >= 16 && rankValue <= 20) src = '/badges/gbl/combat_rank_3.png';
+      else if (rankValue === 21) src = '/badges/gbl/special_combat_rank_1.png';
+      else if (rankValue === 22) src = '/badges/gbl/special_combat_rank_2.png';
+      else if (rankValue === 23) src = '/badges/gbl/special_combat_rank_3.png';
+      else if (rankValue === 24) src = '/badges/gbl/special_combat_rank_4.png';
+      return (
+        <div className="relative h-12 w-12">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="h-full w-full object-contain" src={src} alt="GBL Rank" />
+        </div>
+      );
+    },
+  },
+  {
+    field: 'gbl_rating',
+    labelId: 'data_submission.gbl_rating',
+    labelText: 'GBL Rating',
+    icon: (value) => {
+      const ratingValue = typeof value === 'number' ? value : 0;
+      let src = '/badges/gbl/CombatRank03.png';
+      if (ratingValue < 2000) src = '/badges/gbl/CombatRank03.png';
+      else if (ratingValue >= 2000 && ratingValue <= 2499) src = '/badges/gbl/special_combat_rank_1.png';
+      else if (ratingValue >= 2500 && ratingValue <= 2749) src = '/badges/gbl/special_combat_rank_2.png';
+      else if (ratingValue >= 2750 && ratingValue <= 2999) src = '/badges/gbl/special_combat_rank_3.png';
+      else if (ratingValue >= 3000) src = '/badges/gbl/special_combat_rank_4.png';
+      return (
+        <div className="relative h-12 w-12">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="h-full w-full object-contain" src={src} alt="GBL Rating" />
+        </div>
+      );
+    },
+  },
+  {
     field: 'caught_normal',
     labelId: 'data_submission.caught_normal',
     labelText: 'Caught Normal',
@@ -601,6 +650,7 @@ const DataSubmissionPage: NextPage = () => {
               className={`mt-1 block w-full rounded border ${
                 formErrors[field] ? 'border-red' : 'border-gray-600'
               } bg-white px-2 py-1 text-sm text-gray-900`}
+              disabled={field === 'gbl_rating' && ((formData.gbl_rank as number) ?? 0) < 20}
               value={displayValue as string}
               onChange={(e) => {
                 const value =

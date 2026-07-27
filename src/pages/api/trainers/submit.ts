@@ -135,10 +135,7 @@ export default async (request: NextApiRequest, response: NextApiResponse<ApiResp
       }
 
       // Check if this Discord user is already registered via friendship_id lookup
-      const [existingPlayer] = await pool.execute(
-        'SELECT `name` FROM `player` WHERE `friendship_id` = ?',
-        [discordId],
-      );
+      const [existingPlayer] = await pool.execute('SELECT `name` FROM `player` WHERE `friendship_id` = ?', [discordId]);
       if ((existingPlayer as unknown[]).length > 0) {
         // Already registered — use the existing trainer name
         const foundName = (existingPlayer as Array<{ name: string }>)[0]?.name;
@@ -156,9 +153,7 @@ export default async (request: NextApiRequest, response: NextApiResponse<ApiResp
         }
 
         // Check if the trainer name already exists
-        const [existingRows] = await pool.execute('SELECT `name` FROM `player` WHERE `name` = ?', [
-          formData.name,
-        ]);
+        const [existingRows] = await pool.execute('SELECT `name` FROM `player` WHERE `name` = ?', [formData.name]);
         if ((existingRows as unknown[]).length > 0) {
           response.status(409).json({ success: false, message: 'Trainer name already exists' });
           return;
@@ -241,9 +236,7 @@ export default async (request: NextApiRequest, response: NextApiResponse<ApiResp
 
   const columns = otherFields.map((f) => `\`${f}\``).join(', ');
   const placeholders = otherFields.map(() => '?').join(', ');
-  const updateClause = otherFields
-    .map((f) => `\`${f}\` = VALUES(\`${f}\`)`)
-    .join(', ');
+  const updateClause = otherFields.map((f) => `\`${f}\` = VALUES(\`${f}\`)`).join(', ');
 
   const sql = `INSERT INTO \`player\` (\`name\`, ${columns}) VALUES (?, ${placeholders}) ON DUPLICATE KEY UPDATE ${updateClause}`;
 

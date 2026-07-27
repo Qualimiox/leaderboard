@@ -485,8 +485,10 @@ const DataSubmissionPage: NextPage = () => {
     let error = '';
 
     if (value !== null && value !== '') {
-      // km_walked accepts positive floats or integers or 0
-      if (field === 'km_walked') {
+      // Skip numeric validation for text-only fields
+      if (field === 'name') {
+        // Name is a free-text field — no validation needed here
+      } else if (field === 'km_walked') {
         const numValue = typeof value === 'string' ? parseFloat(value) : value;
         if (typeof numValue === 'number' && !Number.isNaN(numValue)) {
           if (numValue < 0) {
@@ -771,7 +773,15 @@ const DataSubmissionPage: NextPage = () => {
           </div>
 
           <div className="flex items-center gap-3">
-            <Button type="submit" disabled={isSubmitting || Object.keys(formErrors).length > 0} className="px-3">
+            <Button
+              type="submit"
+              disabled={
+                isSubmitting ||
+                Object.keys(formErrors).length > 0 ||
+                (!trainerName && !resolvedTrainerName && !(formData.name?.trim()))
+              }
+              className="px-3"
+            >
               <FormattedMessage
                 id="data_submission.submit_button"
                 defaultMessage="Submit Data"

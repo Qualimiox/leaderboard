@@ -160,7 +160,9 @@ export default async (request: NextApiRequest, response: NextApiResponse<ApiResp
   const fields: string[] = [];
   const values: (string | number | null)[] = [];
 
-  // Always set last_seen to current UNIX timestamp
+  // Always set name and last_seen for upsert
+  fields.push('name');
+  values.push(name);
   fields.push('last_seen');
   values.push(Math.floor(Date.now() / 1000));
 

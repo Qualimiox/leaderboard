@@ -140,6 +140,15 @@ export default async (request: NextApiRequest, response: NextApiResponse<ApiResp
         return;
       }
 
+      // Check if the trainer name already exists
+      const [existingRows] = await pool.execute('SELECT `name` FROM `player` WHERE `name` = ?', [
+        formData.name,
+      ]);
+      if ((existingRows as unknown[]).length > 0) {
+        response.status(409).json({ success: false, message: 'Trainer name already exists' });
+        return;
+      }
+
       await setUserTrainerName(discordId, formData.name);
       name = formData.name;
     } else {

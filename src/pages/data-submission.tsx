@@ -778,7 +778,7 @@ const DataSubmissionPage: NextPage = () => {
               disabled={
                 isSubmitting ||
                 Object.keys(formErrors).length > 0 ||
-                (!trainerName && !resolvedTrainerName && !((formData.name as string)?.trim()))
+                (!trainerName && !resolvedTrainerName && !(formData.name as string)?.trim())
               }
               className="px-3"
             >

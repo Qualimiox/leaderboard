@@ -235,16 +235,19 @@ export default async (request: NextApiRequest, response: NextApiResponse<ApiResp
     }
   }
 
-  const columns = uniqueFields.map((f) => `\`${f}\``).join(', ');
-  const placeholders = uniqueFields.map(() => '?').join(', ');
-  const updateClause = uniqueFields
-    .filter((f) => f !== 'name')
+  // Exclude 'name' from columns/values since it's already in the SQL template
+  const otherFields = uniqueFields.filter((f) => f !== 'name');
+  const otherValues = uniqueValues.filter((_, i) => uniqueFields[i] !== 'name');
+
+  const columns = otherFields.map((f) => `\`${f}\``).join(', ');
+  const placeholders = otherFields.map(() => '?').join(', ');
+  const updateClause = otherFields
     .map((f) => `\`${f}\` = VALUES(\`${f}\`)`)
     .join(', ');
 
   const sql = `INSERT INTO \`player\` (\`name\`, ${columns}) VALUES (?, ${placeholders}) ON DUPLICATE KEY UPDATE ${updateClause}`;
 
-  const params: (string | number | null)[] = [name, ...uniqueValues];
+  const params: (string | number | null)[] = [name, ...otherValues];
 
   try {
     await pool.execute(sql, params);

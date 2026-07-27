@@ -127,12 +127,6 @@ export default async (request: NextApiRequest, response: NextApiResponse<ApiResp
     const trainerName = (session as unknown as Record<string, unknown>).trainerName as string | undefined;
 
     if (!trainerName) {
-      // Not yet registered — accept name from the body and register the user first
-      if (!formData.name || typeof formData.name !== 'string') {
-        response.status(400).json({ success: false, message: 'Trainer name is required' });
-        return;
-      }
-
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       const discordId = (session as unknown as Record<string, unknown>).discordId as string | undefined;
       if (!discordId || typeof discordId !== 'string') {
@@ -140,17 +134,39 @@ export default async (request: NextApiRequest, response: NextApiResponse<ApiResp
         return;
       }
 
-      // Check if the trainer name already exists
-      const [existingRows] = await pool.execute('SELECT `name` FROM `player` WHERE `name` = ?', [
-        formData.name,
-      ]);
-      if ((existingRows as unknown[]).length > 0) {
-        response.status(409).json({ success: false, message: 'Trainer name already exists' });
-        return;
-      }
+      // Check if this Discord user is already registered via friendship_id lookup
+      const [existingPlayer] = await pool.execute(
+        'SELECT `name` FROM `player` WHERE `friendship_id` = ?',
+        [discordId],
+      );
+      if ((existingPlayer as unknown[]).length > 0) {
+        // Already registered — use the existing trainer name
+        const foundName = (existingPlayer as Array<{ name: string }>)[0]?.name;
+        if (foundName) {
+          name = foundName;
+        } else {
+          response.status(400).json({ success: false, message: 'Trainer not found in database' });
+          return;
+        }
+      } else {
+        // Not yet registered — accept name from the body and register the user first
+        if (!formData.name || typeof formData.name !== 'string') {
+          response.status(400).json({ success: false, message: 'Trainer name is required' });
+          return;
+        }
 
-      await setUserTrainerName(discordId, formData.name);
-      name = formData.name;
+        // Check if the trainer name already exists
+        const [existingRows] = await pool.execute('SELECT `name` FROM `player` WHERE `name` = ?', [
+          formData.name,
+        ]);
+        if ((existingRows as unknown[]).length > 0) {
+          response.status(409).json({ success: false, message: 'Trainer name already exists' });
+          return;
+        }
+
+        await setUserTrainerName(discordId, formData.name);
+        name = formData.name;
+      }
     } else {
       name = trainerName;
     }

@@ -792,7 +792,7 @@
     "description": "Label for level field"
   },
   "data_submission.xp": {
-    "defaultMessage": "XP",
+    "defaultMessage": "Total XP",
     "description": "Label for xp field"
   },
   "data_submission.km_walked": {

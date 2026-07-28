@@ -803,7 +803,12 @@ const DataSubmissionPage: NextPage = () => {
                 />
               </Button>
               {deleteMessage && (
-                <div className={`rounded px-3 py-1 text-sm ${deleteMessage.includes('deleted') ? 'bg-green' : 'bg-red'}`}> {deleteMessage}</div>
+                <div
+                  className={`rounded px-3 py-1 text-sm ${deleteMessage.includes('deleted') ? 'bg-green' : 'bg-red'}`}
+                >
+                  {' '}
+                  {deleteMessage}
+                </div>
               )}
             </div>
           </div>
@@ -874,11 +879,7 @@ const DataSubmissionPage: NextPage = () => {
                     description="Cancel button in delete confirmation dialog"
                   />
                 </Button>
-                <Button
-                  onClick={handleDelete}
-                  disabled={isDeleting}
-                  className="px-3 bg-red hover:bg-red-dark"
-                >
+                <Button onClick={handleDelete} disabled={isDeleting} className="px-3 bg-red hover:bg-red-dark">
                   <FormattedMessage
                     id="data_submission.confirm_delete"
                     defaultMessage="Delete"

@@ -1198,5 +1198,29 @@
   "data_submission.error_negative": {
     "defaultMessage": "Wert muss positiv oder 0 sein",
     "description": "Error message for negative values"
-  } 
+  },
+  "data_submission.delete_success": {
+    "defaultMessage": "Dein Profil wurde gelöscht.",
+    "description": "Success message after profile deletion"
+  },
+  "data_submission.delete_error": {
+    "defaultMessage": "Fehler beim Löschen deines Profils",
+    "description": "Error message on deletion failure"
+  },
+  "data_submission.delete_button": {
+    "defaultMessage": "Profil löschen",
+    "description": "Button to delete user profile"
+  },
+  "data_submission.delete_confirm": {
+    "defaultMessage": "Bist du dir sicher, dass du dein Profil löschen möchtest? Das entfernt alle deine Daten.",
+    "description": "Confirmation message for profile deletion"
+  },
+  "data_submission.cancel": {
+    "defaultMessage": "Abbrechen",
+    "description": "Cancel button in delete confirmation dialog"
+  },
+  "data_submission.confirm_delete": {
+    "defaultMessage": "Profil löschen",
+    "description": "Confirm delete button in confirmation dialog"
+  },  
 }

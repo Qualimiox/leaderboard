@@ -60,10 +60,9 @@ export default async (request: NextApiRequest, response: NextApiResponse<ApiResp
 
     // 3. Delete from leaderboardDatabase.pogo_leaderboard_trainer_history
     if (trainerName) {
-      await pool.execute(
-        `DELETE FROM \`${leaderboardDb}\`.pogo_leaderboard_trainer_history WHERE \`name\` = ?`,
-        [trainerName],
-      );
+      await pool.execute(`DELETE FROM \`${leaderboardDb}\`.pogo_leaderboard_trainer_history WHERE \`name\` = ?`, [
+        trainerName,
+      ]);
     } else if (discordId) {
       await pool.execute(
         `DELETE FROM \`${leaderboardDb}\`.pogo_leaderboard_trainer_history WHERE \`friendship_id\` = ?`,

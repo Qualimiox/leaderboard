@@ -1186,5 +1186,17 @@
   "header.submit_data": {
     "defaultMessage": "Daten einreichen",
     "description": "Navigation link to data submission page"
-  }
+  },
+  "data_submission.error_integer": {
+    "defaultMessage": "Wert muss ganzzahlig und positiv sein",
+    "description": "Error message for non-integer values"
+  },
+  "data_submission.error_invalid_number": {
+    "defaultMessage": "Bitte gebe eine Zahl ein",
+    "description": "Error message for invalid numbers"
+  },
+  "data_submission.error_negative": {
+    "defaultMessage": "Wert muss positiv oder 0 sein",
+    "description": "Error message for negative values"
+  } 
 }

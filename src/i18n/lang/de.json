@@ -1222,5 +1222,5 @@
   "data_submission.confirm_delete": {
     "defaultMessage": "Profil löschen",
     "description": "Confirm delete button in confirmation dialog"
-  },  
+  } 
 }

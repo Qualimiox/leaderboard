@@ -419,6 +419,9 @@ const DataSubmissionPage: NextPage = () => {
   const [submitMessage, setSubmitMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteMessage, setDeleteMessage] = useState('');
 
   // Fetch existing trainer data to pre-fill the form
   const fetchTrainerData = useCallback(async (name: string) => {
@@ -572,6 +575,43 @@ const DataSubmissionPage: NextPage = () => {
       );
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    setDeleteMessage('');
+    setShowDeleteConfirm(false);
+    setIsDeleting(true);
+
+    try {
+      const response = await fetcher<{ success: boolean; message?: string }>('/api/trainers/delete', {
+        method: 'DELETE',
+      });
+
+      if (response.success) {
+        setDeleteMessage(
+          intl.formatMessage({
+            id: 'data_submission.delete_success',
+            defaultMessage: 'Your profile has been deleted.',
+            description: 'Success message after profile deletion',
+          }),
+        );
+        // Clear form data and resolved trainer name
+        setFormData({});
+        setResolvedTrainerName('');
+      } else {
+        setDeleteMessage(response.message ?? 'Deletion failed');
+      }
+    } catch {
+      setDeleteMessage(
+        intl.formatMessage({
+          id: 'data_submission.delete_error',
+          defaultMessage: 'An error occurred while deleting your profile.',
+          description: 'Error message on deletion failure',
+        }),
+      );
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -741,14 +781,32 @@ const DataSubmissionPage: NextPage = () => {
         </h1>
 
         {trainerName || resolvedTrainerName ? (
-          <p className="text-lg text-gray-300 mb-6">
-            <FormattedMessage
-              id="data_submission.trainer_label"
-              defaultMessage="Submitting data for trainer:"
-              description="Label showing which trainer the data is being submitted for"
-            />{' '}
-            <strong className="text-white">{trainerName || resolvedTrainerName}</strong>
-          </p>
+          <div className="mb-6">
+            <p className="text-lg text-gray-300 mb-3">
+              <FormattedMessage
+                id="data_submission.trainer_label"
+                defaultMessage="Submitting data for trainer:"
+                description="Label showing which trainer the data is being submitted for"
+              />{' '}
+              <strong className="text-white">{trainerName || resolvedTrainerName}</strong>
+            </p>
+            <div className="flex items-center gap-3">
+              <Button
+                onClick={() => setShowDeleteConfirm(true)}
+                disabled={isDeleting}
+                className="px-3 bg-red hover:bg-red-dark"
+              >
+                <FormattedMessage
+                  id="data_submission.delete_button"
+                  defaultMessage="Delete Profile"
+                  description="Button to delete user profile"
+                />
+              </Button>
+              {deleteMessage && (
+                <div className={`rounded px-3 py-1 text-sm ${deleteMessage.includes('deleted') ? 'bg-green' : 'bg-red'}`}> {deleteMessage}</div>
+              )}
+            </div>
+          </div>
         ) : (
           <div className="mb-6">
             <label className="block text-lg font-medium text-gray-300">
@@ -792,6 +850,45 @@ const DataSubmissionPage: NextPage = () => {
             {errorMessage && <div className="rounded bg-red text-white px-3 py-1">{errorMessage}</div>}
           </div>
         </form>
+
+        {/* Delete confirmation dialog */}
+        {showDeleteConfirm && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70">
+            <div className="bg-gray-800 rounded-lg p-6 max-w-sm w-full mx-4 border border-gray-600">
+              <p className="text-white text-lg mb-4">
+                <FormattedMessage
+                  id="data_submission.delete_confirm"
+                  defaultMessage="Are you sure you want to delete your profile? This will remove all your data from the leaderboard."
+                  description="Confirmation message for profile deletion"
+                />
+              </p>
+              <div className="flex gap-3 justify-end">
+                <Button
+                  onClick={() => setShowDeleteConfirm(false)}
+                  disabled={isDeleting}
+                  className="px-3 bg-gray-600 hover:bg-gray-700"
+                >
+                  <FormattedMessage
+                    id="data_submission.cancel"
+                    defaultMessage="Cancel"
+                    description="Cancel button in delete confirmation dialog"
+                  />
+                </Button>
+                <Button
+                  onClick={handleDelete}
+                  disabled={isDeleting}
+                  className="px-3 bg-red hover:bg-red-dark"
+                >
+                  <FormattedMessage
+                    id="data_submission.confirm_delete"
+                    defaultMessage="Delete"
+                    description="Confirm delete button in confirmation dialog"
+                  />
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -794,7 +794,8 @@ const DataSubmissionPage: NextPage = () => {
               <Button
                 onClick={() => setShowDeleteConfirm(true)}
                 disabled={isDeleting}
-                className="px-3 bg-red hover:bg-red-dark"
+                style={{ backgroundColor: 'red', color: 'white' }}
+                className="px-3"
               >
                 <FormattedMessage
                   id="data_submission.delete_button"
@@ -871,7 +872,8 @@ const DataSubmissionPage: NextPage = () => {
                 <Button
                   onClick={() => setShowDeleteConfirm(false)}
                   disabled={isDeleting}
-                  className="px-3 bg-gray-600 hover:bg-gray-700"
+                  style={{ backgroundColor: '#4B5563', color: 'white' }}
+                  className="px-3"
                 >
                   <FormattedMessage
                     id="data_submission.cancel"
@@ -879,7 +881,12 @@ const DataSubmissionPage: NextPage = () => {
                     description="Cancel button in delete confirmation dialog"
                   />
                 </Button>
-                <Button onClick={handleDelete} disabled={isDeleting} className="px-3 bg-red hover:bg-red-dark">
+                <Button
+                  onClick={handleDelete}
+                  disabled={isDeleting}
+                  style={{ backgroundColor: 'red', color: 'white' }}
+                  className="px-3"
+                >
                   <FormattedMessage
                     id="data_submission.confirm_delete"
                     defaultMessage="Delete"

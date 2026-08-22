@@ -20,6 +20,7 @@
     "clientSecret": "secret",
     "botToken": "token",
     "guildId": ["1234"],
-    "roleId": ["1234"]
+    "roleId": ["1234"],
+    "monthlyLeaderboardChannelId": "1234567890"
   }
 }

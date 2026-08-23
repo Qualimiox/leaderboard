@@ -17,9 +17,18 @@ export const Header = ({ enableAuth }: HeaderProps): JSX.Element => {
         <div className="ml-1.5 lg:ml-2.5">{config.title}</div>
       </Link>
       {enableAuth && (
-        <a href="#!" className="justify-self-end" onClick={() => signOut()}>
-          <FormattedMessage defaultMessage="Logout" id="drawer.logout" description="Logout button" />
-        </a>
+        <div className="flex items-center gap-4">
+          <Link href="/data-submission" className="hover:underline">
+            <FormattedMessage
+              defaultMessage="Submit Data"
+              id="header.submit_data"
+              description="Navigation link to data submission page"
+            />
+          </Link>
+          <a href="#!" className="justify-self-end" onClick={() => signOut()}>
+            <FormattedMessage defaultMessage="Logout" id="drawer.logout" description="Logout button" />
+          </a>
+        </div>
       )}
     </header>
   );

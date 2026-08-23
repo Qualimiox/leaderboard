@@ -366,33 +366,39 @@ export async function fetchMonthlyTopStats(
   startOfMonth: string,
   endOfMonth: string,
 ): Promise<Record<string, MonthlyTrainerStat[]>> {
-  const selectColumns = STAT_CONFIGS.map(
-    (sc) => `CASE
-      WHEN min_h.${sc.key} IS NOT NULL AND min_h.${sc.key} > 0
-      THEN max_h.${sc.key} - min_h.${sc.key}
-      ELSE NULL
-    END AS ${sc.key}`,
-  ).join(',\n    ');
+  const statColumns = STAT_CONFIGS.map((sc) => sc.key).join(', ');
 
   const query = `
-    SELECT
-      max_h.name AS name,
-      max_h.team AS team,
-      ${selectColumns}
-    FROM (
-      SELECT name, MIN(date) AS min_date, MAX(date) AS max_date
-      FROM ${config.database.leaderboardDatabase}.pogo_leaderboard_trainer_history
-      WHERE date >= ? AND date <= ?
-      GROUP BY name
-    ) dates
-    JOIN ${config.database.leaderboardDatabase}.pogo_leaderboard_trainer_history min_h
-      ON dates.name = min_h.name AND dates.min_date = min_h.date
-    JOIN ${config.database.leaderboardDatabase}.pogo_leaderboard_trainer_history max_h
-      ON dates.name = max_h.name AND dates.max_date = max_h.date
+    SELECT name, team, date, ${statColumns}
+    FROM ${config.database.leaderboardDatabase}.pogo_leaderboard_trainer_history
+    WHERE date >= ? AND date <= ?
+    ORDER BY date ASC
   `;
 
   const [rows] = await pool.execute(query, [startOfMonth, endOfMonth]);
   const results = rows as unknown as Record<string, any>[];
+
+  // Group entries by trainer name
+  const trainerHistoryMap: Record<
+    string,
+    {
+      team: number | null;
+      records: Record<string, any>[];
+    }
+  > = {};
+
+  for (const row of results) {
+    const trainerName = row.name;
+    if (!trainerHistoryMap[trainerName]) {
+      trainerHistoryMap[trainerName] = {
+        team: row.team !== null ? Number(row.team) : null,
+        records: [],
+      };
+    }
+
+    trainerHistoryMap[trainerName].team = row.team !== null ? Number(row.team) : trainerHistoryMap[trainerName].team;
+    trainerHistoryMap[trainerName].records.push(row);
+  }
 
   const topStats: Record<string, MonthlyTrainerStat[]> = {};
 
@@ -400,14 +406,22 @@ export async function fetchMonthlyTopStats(
     const key = statConfig.key;
     const statsForKey: MonthlyTrainerStat[] = [];
 
-    for (const row of results) {
-      if (row[key] !== null && row[key] !== undefined) {
-        const diffVal = Number(row[key]);
-        if (!isNaN(diffVal) && diffVal > 0) {
+    for (const [trainerName, trainerData] of Object.entries(trainerHistoryMap)) {
+      // Find all records with non-null, non-zero values for this stat
+      const validStatValues = trainerData.records
+        .map((r) => Number(r[key]))
+        .filter((val) => !isNaN(val) && val > 0);
+
+      if (validStatValues.length >= 2) {
+        const baseline = validStatValues[0];
+        const endpoint = validStatValues[validStatValues.length - 1];
+        const diff = endpoint - baseline;
+
+        if (diff > 0) {
           statsForKey.push({
-            name: row.name,
-            team: row.team !== null ? Number(row.team) : null,
-            diff: diffVal,
+            name: trainerName,
+            team: trainerData.team,
+            diff,
           });
         }
       }

@@ -1,4 +1,10 @@
-import { STAT_CONFIGS, getBadgeImagePath, getPreviousMonthDateRange, getStatLocalizedName } from './monthlyLeaderboard';
+import {
+  STAT_CONFIGS,
+  formatStatValue,
+  getBadgeImagePath,
+  getPreviousMonthDateRange,
+  getStatLocalizedName,
+} from './monthlyLeaderboard';
 
 function assert(condition: boolean, message: string) {
   if (!condition) {
@@ -49,7 +55,28 @@ console.log('Running Monthly Leaderboard Tests...');
   console.log('✔ Localization tests passed!');
 }
 
-// Test 3: Badge Image Mapping
+// Test 3: Number Formatting (German and English, 1 decimal place for km_walked)
+{
+  // km_walked in German (de): 1234.56 -> 1.234,6
+  const kmDe = formatStatValue('km_walked', 1234.567, 'de');
+  assert(kmDe === '1.234,6', `Expected '1.234,6', got '${kmDe}'`);
+
+  // km_walked in English (en): 1234.56 -> 1,234.6
+  const kmEn = formatStatValue('km_walked', 1234.567, 'en');
+  assert(kmEn === '1,234.6', `Expected '1,234.6', got '${kmEn}'`);
+
+  // caught_pokemon in German (de): 12345 -> 12.345
+  const caughtDe = formatStatValue('caught_pokemon', 12345, 'de');
+  assert(caughtDe === '12.345', `Expected '12.345', got '${caughtDe}'`);
+
+  // caught_pokemon in English (en): 12345 -> 12,345
+  const caughtEn = formatStatValue('caught_pokemon', 12345, 'en');
+  assert(caughtEn === '12,345', `Expected '12,345', got '${caughtEn}'`);
+
+  console.log('✔ Number formatting tests passed!');
+}
+
+// Test 4: Badge Image Mapping
 {
   const kmConfig = STAT_CONFIGS.find((s) => s.key === 'km_walked')!;
   const xpConfig = STAT_CONFIGS.find((s) => s.key === 'xp')!;
@@ -63,7 +90,7 @@ console.log('Running Monthly Leaderboard Tests...');
   console.log('✔ Badge image mapping tests passed!');
 }
 
-// Test 4: All Stat Configs Check
+// Test 5: All Stat Configs Check
 {
   assert(STAT_CONFIGS.length > 50, `Expected > 50 stat configs, got ${STAT_CONFIGS.length}`);
   const keys = new Set(STAT_CONFIGS.map((s) => s.key));

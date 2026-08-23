@@ -262,7 +262,10 @@ export function getPreviousMonthDateRange(refDate = new Date()): {
   const startOfMonth = formatYMD(startDateObj);
   const endOfMonth = formatYMD(endDateObj);
 
-  const locale = config.defaultLocale && config.defaultLocale !== '@@DEFAULT_LOCALE' ? config.defaultLocale : 'en';
+  const rawLocale = config.defaultLocale && config.defaultLocale !== '@@DEFAULT_LOCALE' ? config.defaultLocale : 'en';
+  const localeMap: Record<string, string> = { de: 'de-DE', en: 'en-US', fr: 'fr-FR' };
+  const locale = localeMap[rawLocale] || rawLocale;
+
   const monthName = new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric' }).format(startDateObj);
 
   return { startOfMonth, endOfMonth, monthName, year };
@@ -293,6 +296,31 @@ export function getStatLocalizedName(statConfig: StatConfig, localeOverride?: st
 
   // Fallback to defaultName
   return statConfig.defaultName;
+}
+
+export function formatStatValue(statKey: string, value: number, localeOverride?: string): string {
+  const rawLocale =
+    localeOverride ||
+    (config.defaultLocale && config.defaultLocale !== '@@DEFAULT_LOCALE' ? config.defaultLocale : 'en');
+
+  const localeMap: Record<string, string> = {
+    de: 'de-DE',
+    en: 'en-US',
+    fr: 'fr-FR',
+  };
+
+  const locale = localeMap[rawLocale] || rawLocale;
+
+  if (statKey === 'km_walked' || statKey === 'trade_km') {
+    return value.toLocaleString(locale, {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 1,
+    });
+  }
+
+  return value.toLocaleString(locale, {
+    maximumFractionDigits: 0,
+  });
 }
 
 export function getBadgeImagePath(statConfig: StatConfig): string | null {
@@ -328,42 +356,22 @@ export async function fetchMonthlyTopStats(
 
   const query = `
     SELECT
-      active.name AS name,
+      max_h.name AS name,
       max_h.team AS team,
       ${selectColumns}
     FROM (
-      SELECT
-        t.name,
-        (
-          SELECT MAX(h_max.date)
-          FROM ${config.database.leaderboardDatabase}.pogo_leaderboard_trainer_history h_max
-          WHERE h_max.name = t.name AND h_max.date >= ? AND h_max.date <= ?
-        ) AS max_date,
-        COALESCE(
-          (
-            SELECT MAX(h_before.date)
-            FROM ${config.database.leaderboardDatabase}.pogo_leaderboard_trainer_history h_before
-            WHERE h_before.name = t.name AND h_before.date <= ?
-          ),
-          (
-            SELECT MIN(h_min.date)
-            FROM ${config.database.leaderboardDatabase}.pogo_leaderboard_trainer_history h_min
-            WHERE h_min.name = t.name
-          )
-        ) AS min_date
-      FROM (
-        SELECT DISTINCT name
-        FROM ${config.database.leaderboardDatabase}.pogo_leaderboard_trainer_history
-        WHERE date >= ? AND date <= ?
-      ) t
-    ) active
+      SELECT name, MIN(date) AS min_date, MAX(date) AS max_date
+      FROM ${config.database.leaderboardDatabase}.pogo_leaderboard_trainer_history
+      WHERE date >= ? AND date <= ?
+      GROUP BY name
+    ) dates
     JOIN ${config.database.leaderboardDatabase}.pogo_leaderboard_trainer_history min_h
-      ON active.name = min_h.name AND active.min_date = min_h.date
+      ON dates.name = min_h.name AND dates.min_date = min_h.date
     JOIN ${config.database.leaderboardDatabase}.pogo_leaderboard_trainer_history max_h
-      ON active.name = max_h.name AND active.max_date = max_h.date
+      ON dates.name = max_h.name AND dates.max_date = max_h.date
   `;
 
-  const [rows] = await pool.execute(query, [startOfMonth, endOfMonth, startOfMonth, startOfMonth, endOfMonth]);
+  const [rows] = await pool.execute(query, [startOfMonth, endOfMonth]);
   const results = rows as unknown as Record<string, any>[];
 
   const topStats: Record<string, MonthlyTrainerStat[]> = {};

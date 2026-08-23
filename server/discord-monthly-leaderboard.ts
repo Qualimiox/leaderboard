@@ -5,6 +5,7 @@ import { Client, GatewayIntentBits, EmbedBuilder, AttachmentBuilder } from 'disc
 import {
   STAT_CONFIGS,
   fetchMonthlyTopStats,
+  formatStatValue,
   getBadgeImagePath,
   getPreviousMonthDateRange,
   getStatLocalizedName,
@@ -61,7 +62,7 @@ export async function runMonthlyDiscordLeaderboard(referenceDate?: Date): Promis
           const badgePath = getBadgeImagePath(statConfig);
 
           const descriptionLines = stats.map((trainer, index) => {
-            const formattedDiff = trainer.diff.toLocaleString();
+            const formattedDiff = formatStatValue(statConfig.key, trainer.diff);
             return `**${index + 1}.** ${trainer.name} — +${formattedDiff}`;
           });
 

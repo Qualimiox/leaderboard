@@ -7,6 +7,7 @@ import {
   fetchMonthlyTopStats,
   formatStatValue,
   getBadgeImagePath,
+  getMonthlyLeaderboardHeader,
   getPreviousMonthDateRange,
   getStatLocalizedName,
 } from './monthlyLeaderboard';
@@ -48,6 +49,11 @@ export async function runMonthlyDiscordLeaderboard(referenceDate?: Date): Promis
           client.destroy();
           process.exit(1);
         }
+
+        // Send Leaderboard Header Message
+        const headerText = getMonthlyLeaderboardHeader(monthName);
+        await (channel as any).send(headerText);
+        await sleep(350);
 
         let sentCount = 0;
 

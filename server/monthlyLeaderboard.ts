@@ -271,6 +271,22 @@ export function getPreviousMonthDateRange(refDate = new Date()): {
   return { startOfMonth, endOfMonth, monthName, year };
 }
 
+export function getMonthlyLeaderboardHeader(monthName: string, localeOverride?: string): string {
+  const rawLocale =
+    localeOverride ||
+    (config.defaultLocale && config.defaultLocale !== '@@DEFAULT_LOCALE' ? config.defaultLocale : 'en');
+
+  const lang = rawLocale.toLowerCase().slice(0, 2);
+
+  if (lang === 'de') {
+    return `Bestenliste für ${monthName}`;
+  }
+  if (lang === 'fr') {
+    return `Classement pour ${monthName}`;
+  }
+  return `Leaderboard for ${monthName}`;
+}
+
 export function getStatLocalizedName(statConfig: StatConfig, localeOverride?: string): string {
   const locale =
     localeOverride ||
@@ -350,9 +366,13 @@ export async function fetchMonthlyTopStats(
   startOfMonth: string,
   endOfMonth: string,
 ): Promise<Record<string, MonthlyTrainerStat[]>> {
-  const selectColumns = STAT_CONFIGS.map((sc) => `max_h.${sc.key} - IFNULL(min_h.${sc.key}, 0) AS ${sc.key}`).join(
-    ',\n    ',
-  );
+  const selectColumns = STAT_CONFIGS.map(
+    (sc) => `CASE
+      WHEN min_h.${sc.key} IS NOT NULL AND min_h.${sc.key} > 0
+      THEN max_h.${sc.key} - min_h.${sc.key}
+      ELSE NULL
+    END AS ${sc.key}`,
+  ).join(',\n    ');
 
   const query = `
     SELECT
@@ -381,13 +401,15 @@ export async function fetchMonthlyTopStats(
     const statsForKey: MonthlyTrainerStat[] = [];
 
     for (const row of results) {
-      const diffVal = Number(row[key]);
-      if (!isNaN(diffVal) && diffVal > 0) {
-        statsForKey.push({
-          name: row.name,
-          team: row.team !== null ? Number(row.team) : null,
-          diff: diffVal,
-        });
+      if (row[key] !== null && row[key] !== undefined) {
+        const diffVal = Number(row[key]);
+        if (!isNaN(diffVal) && diffVal > 0) {
+          statsForKey.push({
+            name: row.name,
+            team: row.team !== null ? Number(row.team) : null,
+            diff: diffVal,
+          });
+        }
       }
     }
 

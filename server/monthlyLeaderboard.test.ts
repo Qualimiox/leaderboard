@@ -2,6 +2,7 @@ import {
   STAT_CONFIGS,
   formatStatValue,
   getBadgeImagePath,
+  getMonthlyLeaderboardHeader,
   getPreviousMonthDateRange,
   getStatLocalizedName,
 } from './monthlyLeaderboard';
@@ -40,7 +41,7 @@ console.log('Running Monthly Leaderboard Tests...');
   console.log('✔ Date range calculation tests passed!');
 }
 
-// Test 2: Localization
+// Test 2: Localization & Header Message
 {
   const xpConfig = STAT_CONFIGS.find((s) => s.key === 'xp')!;
   const caughtConfig = STAT_CONFIGS.find((s) => s.key === 'caught_pokemon')!;
@@ -52,7 +53,11 @@ console.log('Running Monthly Leaderboard Tests...');
   assert(getStatLocalizedName(caughtConfig, 'de') === 'Sammler', 'Caught pokemon de failed');
   assert(getStatLocalizedName(kmConfig, 'de') === 'Jogger', 'Km walked de failed');
 
-  console.log('✔ Localization tests passed!');
+  assert(getMonthlyLeaderboardHeader('October 2023', 'en') === 'Leaderboard for October 2023', 'Header en failed');
+  assert(getMonthlyLeaderboardHeader('Oktober 2023', 'de') === 'Bestenliste für Oktober 2023', 'Header de failed');
+  assert(getMonthlyLeaderboardHeader('octobre 2023', 'fr') === 'Classement pour octobre 2023', 'Header fr failed');
+
+  console.log('✔ Localization and header tests passed!');
 }
 
 // Test 3: Number Formatting (German and English, 1 decimal place for km_walked)

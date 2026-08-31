@@ -43,7 +43,7 @@ export async function runMonthlyDiscordLeaderboard(referenceDate?: Date): Promis
 
         const channel = await client.channels.fetch(channelId);
         if (!channel || !channel.isTextBased() || !('send' in channel)) {
-          const errMsg = `Channel ID ${channelId} was not found or is not a sendable text channel.`;
+          const errMsg = `Channel ID ${channelId} was not found or is not a text channel.`;
           logger.error(errMsg);
           client.destroy();
           reject(new Error(errMsg));
@@ -119,7 +119,16 @@ export async function runMonthlyDiscordLeaderboard(referenceDate?: Date): Promis
 
 // Execute if run directly from CLI
 if (process.argv[1] && process.argv[1].endsWith('discord-monthly-leaderboard.ts')) {
-  const argDate = process.argv[2] ? new Date(process.argv[2]) : undefined;
+  let argDate: Date | undefined;
+  if (process.argv[2]) {
+    const parts = process.argv[2].split('-').map(Number);
+    if (parts.length === 3) {
+      argDate = new Date(parts[0], parts[1] - 1, parts[2], 12, 0, 0);
+    } else {
+      argDate = new Date(process.argv[2]);
+    }
+  }
+
   runMonthlyDiscordLeaderboard(argDate)
     .then(() => {
       process.exit(0);

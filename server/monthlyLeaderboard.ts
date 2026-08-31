@@ -4,7 +4,6 @@ import { config } from 'node-config-ts';
 
 import { pool } from '../src/database';
 import { Badge } from '../src/types';
-import { badgeTranslations } from '../src/features/profile/utils/badgeTranslations';
 import { badgeToAssetId } from '../src/features/profile/utils/badgeToAssetId';
 import { logger } from './logger';
 
@@ -380,17 +379,14 @@ export async function fetchMonthlyTopStats(
       DATE_FORMAT(date, '%Y-%m-%d') AS date_str,
       ${statColumns}
     FROM ${config.database.leaderboardDatabase}.pogo_leaderboard_trainer_history
-    WHERE date >= ? AND date <= ?
+    WHERE DATE(date) >= ? AND DATE(date) <= ?
     ORDER BY pogo_leaderboard_trainer_history.date ASC
   `;
 
-  const startTimestamp = `${startOfMonth} 00:00:00`;
-  const endTimestamp = `${endOfMonth} 23:59:59`;
-
-  const [rows] = await pool.execute(query, [startTimestamp, endTimestamp]);
+  const [rows] = await pool.execute(query, [startOfMonth, endOfMonth]);
   const results = rows as unknown as Record<string, any>[];
 
-  // Group entries by trainer unique ID (friendship_id || friend_code || name)
+  // Group entries by trainer primary key (name)
   const trainerHistoryMap: Record<
     string,
     {
@@ -401,24 +397,21 @@ export async function fetchMonthlyTopStats(
   > = {};
 
   for (const row of results) {
-    const trainerKey = row.friendship_id || row.friend_code || row.name;
+    const trainerName = row.name;
 
-    if (!trainerHistoryMap[trainerKey]) {
-      trainerHistoryMap[trainerKey] = {
-        name: row.name,
+    if (!trainerHistoryMap[trainerName]) {
+      trainerHistoryMap[trainerName] = {
+        name: trainerName,
         team: row.team !== null ? Number(row.team) : null,
         records: [],
       };
     }
 
-    if (row.name) {
-      trainerHistoryMap[trainerKey].name = row.name;
-    }
     if (row.team !== null && row.team !== undefined) {
-      trainerHistoryMap[trainerKey].team = Number(row.team);
+      trainerHistoryMap[trainerName].team = Number(row.team);
     }
 
-    trainerHistoryMap[trainerKey].records.push(row);
+    trainerHistoryMap[trainerName].records.push(row);
   }
 
   const topStats: Record<string, MonthlyTrainerStat[]> = {};
@@ -427,14 +420,14 @@ export async function fetchMonthlyTopStats(
     const key = statConfig.key;
     const statsForKey: MonthlyTrainerStat[] = [];
 
-    for (const [trainerKey, trainerData] of Object.entries(trainerHistoryMap)) {
-      // Extract all valid positive numeric records for this stat in the target month
+    for (const [trainerName, trainerData] of Object.entries(trainerHistoryMap)) {
+      // Extract all valid numeric records for this stat in the target month (including 0)
       const recordsInMonth = trainerData.records
         .map((r) => ({
           date: r.date_str ? String(r.date_str) : formatDateYMD(r.date),
-          val: Number(r[key]),
+          val: r[key] !== null && r[key] !== undefined && r[key] !== '' ? Number(r[key]) : NaN,
         }))
-        .filter((r) => !isNaN(r.val) && r.val > 0);
+        .filter((r) => !isNaN(r.val));
 
       if (recordsInMonth.length > 0) {
         const baseline = recordsInMonth[0].val;

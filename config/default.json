@@ -20,7 +20,8 @@
     "clientSecret": "@@DISCORD_CLIENT_SECRET",
     "botToken": "@@DISCORD_BOT_TOKEN",
     "guildId": [],
-    "roleId": []
+    "roleId": [],
+	"monthlyLeaderboardChannelId": "@@DISCORD_MONTHLY_LEADERBOARD_CHANNEL_ID"	
   },
   "numberOfTrainerProfileToPrebuild": 30
 }

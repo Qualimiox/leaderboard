@@ -372,13 +372,16 @@ export async function fetchMonthlyTopStats(
   const statColumns = STAT_CONFIGS.map((sc) => sc.key).join(', ');
 
   const query = `
-    SELECT name, team, date, ${statColumns}
+    SELECT name, team, DATE_FORMAT(date, '%Y-%m-%d') AS date_str, ${statColumns}
     FROM ${config.database.leaderboardDatabase}.pogo_leaderboard_trainer_history
     WHERE date >= ? AND date <= ?
-    ORDER BY date ASC
+    ORDER BY pogo_leaderboard_trainer_history.date ASC
   `;
 
-  const [rows] = await pool.execute(query, [startOfMonth, endOfMonth]);
+  const startTimestamp = `${startOfMonth} 00:00:00`;
+  const endTimestamp = `${endOfMonth} 23:59:59`;
+
+  const [rows] = await pool.execute(query, [startTimestamp, endTimestamp]);
   const results = rows as unknown as Record<string, any>[];
 
   // Group entries by trainer name
@@ -413,7 +416,7 @@ export async function fetchMonthlyTopStats(
       // Extract all valid positive numeric records for this stat in the target month
       const recordsInMonth = trainerData.records
         .map((r) => ({
-          date: formatDateYMD(r.date),
+          date: r.date_str ? String(r.date_str) : formatDateYMD(r.date),
           val: Number(r[key]),
         }))
         .filter((r) => !isNaN(r.val) && r.val > 0);

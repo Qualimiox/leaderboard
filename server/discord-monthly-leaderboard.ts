@@ -20,13 +20,11 @@ export async function runMonthlyDiscordLeaderboard(referenceDate?: Date): Promis
   const channelId = config.discord?.monthlyLeaderboardChannelId;
 
   if (!botToken || botToken === '@@DISCORD_BOT_TOKEN' || botToken === 'token') {
-    logger.error('Discord botToken is not configured in config/default.json or environment.');
-    process.exit(1);
+    throw new Error('Discord botToken is not configured in config/default.json or environment.');
   }
 
   if (!channelId || channelId === '@@DISCORD_MONTHLY_LEADERBOARD_CHANNEL_ID') {
-    logger.error('Discord monthlyLeaderboardChannelId is not configured in config/default.json or environment.');
-    process.exit(1);
+    throw new Error('Discord monthlyLeaderboardChannelId is not configured in config/default.json or environment.');
   }
 
   const { startOfMonth, endOfMonth, monthName } = getPreviousMonthDateRange(referenceDate);
@@ -44,15 +42,17 @@ export async function runMonthlyDiscordLeaderboard(referenceDate?: Date): Promis
         logger.info(`Logged in to Discord as ${client.user?.tag}`);
 
         const channel = await client.channels.fetch(channelId);
-        if (!channel || !channel.isTextBased()) {
-          logger.error(`Channel ID ${channelId} was not found or is not a text channel.`);
+        if (!channel || !channel.isTextBased() || !('send' in channel)) {
+          const errMsg = `Channel ID ${channelId} was not found or is not a sendable text channel.`;
+          logger.error(errMsg);
           client.destroy();
-          process.exit(1);
+          reject(new Error(errMsg));
+          return;
         }
 
         // Send Leaderboard Header Message
         const headerText = getMonthlyLeaderboardHeader(monthName);
-        await (channel as any).send(headerText);
+        await channel.send(headerText);
         await sleep(350);
 
         let sentCount = 0;
@@ -85,12 +85,12 @@ export async function runMonthlyDiscordLeaderboard(referenceDate?: Date): Promis
             const attachment = new AttachmentBuilder(badgePath, { name: fileName });
             embed.setThumbnail(`attachment://${fileName}`);
 
-            await (channel as any).send({
+            await channel.send({
               embeds: [embed],
               files: [attachment],
             });
           } else {
-            await (channel as any).send({
+            await channel.send({
               embeds: [embed],
             });
           }

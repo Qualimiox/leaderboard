@@ -235,6 +235,16 @@ export const STAT_CONFIGS: StatConfig[] = [
   { key: 'caught_fairy', badge: Badge.CAUGHT_FAIRY, i18nKey: 'type_fairy', defaultName: 'Fairy' },
 ];
 
+function formatDateYMD(dateInput: Date | string): string {
+  if (typeof dateInput === 'string') {
+    return dateInput.slice(0, 10);
+  }
+  const y = dateInput.getFullYear();
+  const m = String(dateInput.getMonth() + 1).padStart(2, '0');
+  const d = String(dateInput.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
 export function getPreviousMonthDateRange(refDate = new Date()): {
   startOfMonth: string;
   endOfMonth: string;
@@ -252,15 +262,8 @@ export function getPreviousMonthDateRange(refDate = new Date()): {
   const startDateObj = new Date(year, month, 1);
   const endDateObj = new Date(year, month + 1, 0); // Last day of month
 
-  const formatYMD = (d: Date) => {
-    const y = d.getFullYear();
-    const m = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-    return `${y}-${m}-${day}`;
-  };
-
-  const startOfMonth = formatYMD(startDateObj);
-  const endOfMonth = formatYMD(endDateObj);
+  const startOfMonth = formatDateYMD(startDateObj);
+  const endOfMonth = formatDateYMD(endDateObj);
 
   const rawLocale = config.defaultLocale && config.defaultLocale !== '@@DEFAULT_LOCALE' ? config.defaultLocale : 'en';
   const localeMap: Record<string, string> = { de: 'de-DE', en: 'en-US', fr: 'fr-FR' };
@@ -407,14 +410,17 @@ export async function fetchMonthlyTopStats(
     const statsForKey: MonthlyTrainerStat[] = [];
 
     for (const [trainerName, trainerData] of Object.entries(trainerHistoryMap)) {
-      // Find all records with non-null, non-zero values for this stat
-      const validStatValues = trainerData.records
-        .map((r) => Number(r[key]))
-        .filter((val) => !isNaN(val) && val > 0);
+      // Extract all valid positive numeric records for this stat in the target month
+      const recordsInMonth = trainerData.records
+        .map((r) => ({
+          date: formatDateYMD(r.date),
+          val: Number(r[key]),
+        }))
+        .filter((r) => !isNaN(r.val) && r.val > 0);
 
-      if (validStatValues.length >= 2) {
-        const baseline = validStatValues[0];
-        const endpoint = validStatValues[validStatValues.length - 1];
+      if (recordsInMonth.length > 0) {
+        const baseline = recordsInMonth[0].val;
+        const endpoint = recordsInMonth[recordsInMonth.length - 1].val;
         const diff = endpoint - baseline;
 
         if (diff > 0) {

@@ -372,7 +372,13 @@ export async function fetchMonthlyTopStats(
   const statColumns = STAT_CONFIGS.map((sc) => sc.key).join(', ');
 
   const query = `
-    SELECT name, team, DATE_FORMAT(date, '%Y-%m-%d') AS date_str, ${statColumns}
+    SELECT
+      name,
+      friendship_id,
+      friend_code,
+      team,
+      DATE_FORMAT(date, '%Y-%m-%d') AS date_str,
+      ${statColumns}
     FROM ${config.database.leaderboardDatabase}.pogo_leaderboard_trainer_history
     WHERE date >= ? AND date <= ?
     ORDER BY pogo_leaderboard_trainer_history.date ASC
@@ -384,26 +390,35 @@ export async function fetchMonthlyTopStats(
   const [rows] = await pool.execute(query, [startTimestamp, endTimestamp]);
   const results = rows as unknown as Record<string, any>[];
 
-  // Group entries by trainer name
+  // Group entries by trainer unique ID (friendship_id || friend_code || name)
   const trainerHistoryMap: Record<
     string,
     {
+      name: string;
       team: number | null;
       records: Record<string, any>[];
     }
   > = {};
 
   for (const row of results) {
-    const trainerName = row.name;
-    if (!trainerHistoryMap[trainerName]) {
-      trainerHistoryMap[trainerName] = {
+    const trainerKey = row.friendship_id || row.friend_code || row.name;
+
+    if (!trainerHistoryMap[trainerKey]) {
+      trainerHistoryMap[trainerKey] = {
+        name: row.name,
         team: row.team !== null ? Number(row.team) : null,
         records: [],
       };
     }
 
-    trainerHistoryMap[trainerName].team = row.team !== null ? Number(row.team) : trainerHistoryMap[trainerName].team;
-    trainerHistoryMap[trainerName].records.push(row);
+    if (row.name) {
+      trainerHistoryMap[trainerKey].name = row.name;
+    }
+    if (row.team !== null && row.team !== undefined) {
+      trainerHistoryMap[trainerKey].team = Number(row.team);
+    }
+
+    trainerHistoryMap[trainerKey].records.push(row);
   }
 
   const topStats: Record<string, MonthlyTrainerStat[]> = {};
@@ -412,7 +427,7 @@ export async function fetchMonthlyTopStats(
     const key = statConfig.key;
     const statsForKey: MonthlyTrainerStat[] = [];
 
-    for (const [trainerName, trainerData] of Object.entries(trainerHistoryMap)) {
+    for (const [trainerKey, trainerData] of Object.entries(trainerHistoryMap)) {
       // Extract all valid positive numeric records for this stat in the target month
       const recordsInMonth = trainerData.records
         .map((r) => ({
@@ -428,7 +443,7 @@ export async function fetchMonthlyTopStats(
 
         if (diff > 0) {
           statsForKey.push({
-            name: trainerName,
+            name: trainerData.name,
             team: trainerData.team,
             diff,
           });
